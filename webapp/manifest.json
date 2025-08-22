@@ -1,0 +1,259 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "hodek.vendorportal",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.3",
+      "toolsId": "61626216-8468-4fea-a728-dddf6e19e540"
+    },
+    "dataSources": {
+      "ZMM_VEND_PORT_SER_BIND_VAN": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZMM_VEND_PORT_SER_BIND_VAN',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+          "localUri": "localService/mainService/ZMM_VEND_PORT_SER_BIND_VAN.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZMM_VEND_PORT_SER_BIND/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "ZMM_VEND_PORT_SER_BIND_VAN"
+          ],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "zvendorportal-manage": {
+          "semanticObject": "zvendorportal",
+          "action": "manage",
+          "title": "{{zvendorportal-manage.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.130.11",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "config": {
+      "fullWidth": true
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "hodek.vendorportal.i18n.i18n"
+        }
+      },
+      "vendorModel": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "hodek.vendorportal.view",
+        "async": true
+      },
+      "routes": [
+        {
+          "name": "RouteVendorPortal",
+          "pattern": "",
+          "target": [
+            "TargetVendorPortal"
+          ]
+        },
+        {
+          "name": "RoutePurchaseOrder",
+          "pattern": "purchaseOrder/{po}",
+          "target": [
+            "TargetPurchaseOrder"
+          ]
+        },
+        {
+          "name": "RouteAsnReprint",
+          "pattern": "asn",
+          "target": [
+            "TargetAsnReprint"
+          ]
+        },
+        {
+          "name": "RouteCancelAsn",
+          "pattern": "cancelAsn",
+          "target": [
+            "TargetCancelAsn"
+          ]
+        },
+        {
+          "name": "RouteScheduleAgreeOrder",
+          "pattern": "sano/{po}",
+          "target": [
+            "TargetScheduleAgreeOrder"
+          ]
+        },
+        {
+          "name": "RouteAsnCreation",
+          "pattern": "asn/{po}",
+          "target": [
+            "TargetAsnCreation"
+          ]
+        },
+        {
+          "name": "RouteAsnSaCreation",
+          "pattern": "SAasn/{po}",
+          "target": [
+            "TargetAsnSaCreation"
+          ]
+        },
+        {
+          "name": "RouteSchedulingAgg",
+          "pattern": "schedulingAgreement",
+          "target": [
+            "TargetSchedulingAgg"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetVendorPortal": {
+          "id": "VendorPortalScreen",
+          "name": "VendorPortalScreen",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetPurchaseOrder": {
+          "id": "PurchaseOrder",
+          "name": "PurchaseOrder",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetAsnReprint": {
+          "id": "ReprintAsn",
+          "name": "ReprintAsn",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetCancelAsn": {
+          "id": "CancelAsn",
+          "name": "CancelAsn",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetScheduleAgreeOrder": {
+          "id": "ScheduleAgreeOrder",
+          "name": "ScheduleAgreeOrder",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetAsnCreation": {
+          "id": "AsnCreation",
+          "name": "AsnCreation",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetAsnSaCreation": {
+          "id": "AsnSaCreation",
+          "name": "AsnSaCreation",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetSchedulingAgg": {
+          "id": "SchedulingAgreement",
+          "name": "SchedulingAgreement",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "hodek.vendorportal.view.Main",
+      "type": "XML",
+      "id": "Main",
+      "async": true
+    }
+  }
+}

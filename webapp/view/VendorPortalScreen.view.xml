@@ -1,0 +1,131 @@
+<mvc:View controllerName="hodek.vendorportal.controller.VendorPortalScreen"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:svm="sap.ui.comp.smartvariants">
+
+    <Page id="purchaseOrderpage" title="Vendor Portal" showFooter="true" titleAlignment="Auto" showNavButton="false" showHeader="false" navButtonPress="onNavBack" >
+        <content>
+            <fb:FilterBar id="filterbar" useToolbar="false" search=".onFilterGo" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+                <fb:filterGroupItems>
+
+                    <!-- 🔍 Search Field -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem8" name="Search" label="Search" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <SearchField id="searchField" width="90%" class="" placeholder="Search..." liveChange=".onLiveChange" search=".onSearch" />
+
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <!-- Supplier -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem9" name="Supplier" label="Supplier" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <!-- <MultiComboBox id="idPoSupplier" selectionChange=".onSelectionChange" items="{ path: 'FilterModel>/SuppliersFromPO' }">
+                                        <core:Item id="_IDGenItem3" key="{FilterModel>}" text="{FilterModel>}" />
+                                    </MultiComboBox> -->
+                            <MultiInput id="idPoSupplier" valueHelpOnly="true" showValueHelp="true" showSuggestion="false" valueHelpRequest=".onSupplierValueHelp" width="100%" placeholder="Select Supplier(s)" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <!-- Purchase Order -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem7" name="PurchaseOrder" label="Purchase Order" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="idPoNumber" valueHelpOnly="true" showValueHelp="true" showSuggestion="false" valueHelpRequest=".onPurchaseOrderValueHelp" width="100%" placeholder="Select Purchase Order(s)" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <!-- Purchasing Group -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItemPG" name="PurchasingGroup" label="Purchasing Group" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="idPoPurchGroup" valueHelpOnly="true" showValueHelp="true" showSuggestion="false" valueHelpRequest=".onPurchasingGroupValueHelp" width="100%" placeholder="Select Purchasing Group(s)" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <!-- Company Code -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem12" name="CompanyCode" label="Company Code" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <ComboBox id="idPoCompanyCode" items="{ path: 'CompanyCodeModel>/' }">
+                                <core:Item id="_IDGenItem11" key="{CompanyCodeModel>CompanyCode}" text="{CompanyCodeModel>CompanyCode}-{CompanyCodeModel>CompanyCodeName}" />
+                            </ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <!-- Plant -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem14" name="Plant" label="Plant" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="idFilterPlant" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onPlantValueHelp" width="100%" placeholder="Select Plant(s)" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <!-- Purchase Order Date -->
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem13" name="PurchaseOrderDate" label="Purchase Order Date" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <DateRangeSelection id="idPoPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+
+            </fb:FilterBar>
+            <Table id="idProductsTable" alternateRowColors="true" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelPO>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+                <headerToolbar>
+                    <OverflowToolbar id="_IDGenOverflowToolbar1">
+                        <Title id="_IDGenTitle3" text="Purchase Orders" level="H2"/>
+                        <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+                        <!-- <Button id="_IDGenButton" tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                    <Button id="_IDGenButton1" tooltip="Filter" icon="sap-icon://filter" press="handleFilterButtonPressed"/>
+                    <Button id="_IDGenButton2" tooltip="Group" icon="sap-icon://group-2" press="handleGroupButtonPressed"/>
+                    <ToggleButton id="_IDGenToggleButton" icon="sap-icon://menu" tooltip="Enable Custom Context Menu" press="onToggleContextMenu" /> -->
+                    </OverflowToolbar>
+                </headerToolbar>
+                <infoToolbar>
+                    <OverflowToolbar id="vsdFilterBar" visible="false">
+                        <Text id="vsdFilterLabel" />
+                    </OverflowToolbar>
+                </infoToolbar>
+                <columns>
+                    <Column id="purOrder" headerMenu="columnHeaderMenu">
+                        <Text id="_IDGenText" text="Purchase Order" />
+                    </Column>
+                    <Column id="_IDGenColumn" minScreenWidth="Tablet" demandPopin="true">
+                        <Text id="_IDGenText2" text="Supplier" />
+                    </Column>
+                    <Column id="_IDGenColumn1" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                        <Text id="_IDGenText3" text="Supplier Date" />
+                    </Column>
+                    <Column id="_IDGenColumn2" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                        <Text id="_IDGenText4" text="Sales Person" />
+                    </Column>
+                    <Column id="_IDGenColumn3" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="false">
+                        <Text id="_IDGenText12" text="Plant" />
+                    </Column>
+                    <Column id="_IDGenColumnn3" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="false">
+                        <Text id="_IDGenTextt12" text="Purchase Order Text" />
+                    </Column>
+
+                </columns>
+                <items>
+                    <ColumnListItem id="_IDGenColumnListItem" vAlign="Middle" type="Navigation">
+                        <cells>
+                            <Text id="_IDGenText5" text="{
+    parts: [
+      { path: 'TableModelPO>PurchaseOrder' },
+      { path: 'TableModelPO>purchaseOrderText' }
+    ],
+    formatter: '.formatter.formatPurchaseOrderText'
+  }" />
+
+                            <Text id="_IDGenText8" text="{TableModelPO>SupplierName} ( {TableModelPO>Supplier} )" />
+                            <Text id="_IDGenText9" text="{path:'TableModelPO>PurchaseOrderDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
+                            <Text id="_IDGenText10" text="{TableModelPO>SupplierRespSalesPersonName}" />
+                            <Text id="_IDGenText13" text="{TableModelPO>PlantName}({TableModelPO>Plant})" />
+                            <Text id="_IDGenTextt" text="{TableModelPO>purchaseOrderText}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+
+
+</mvc:View>

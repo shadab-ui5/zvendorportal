@@ -1,0 +1,116 @@
+<mvc:View controllerName="hodek.vendorportal.controller.ScheduleAgreeOrder"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:svm="sap.ui.comp.smartvariants">
+    <!-- <Page id="ScheduleAgreeOrderpage" title="Vendor Portal" showFooter="true" titleAlignment="Auto" showNavButton="true" navButtonPress="onNavBack"> -->
+        <f:DynamicPage id="_IDGenDynamicPage1" headerExpanded="{/headerExpanded}">
+            <f:title>
+                <f:DynamicPageTitle id="_IDGenDynamicPageTitle">
+                    <f:navigationActions>
+                        <Button id="_IDGenButton13" text="Next" type="Success" icon="sap-icon://open-command-field" press="onNavNext"/>
+                    </f:navigationActions>
+                    <f:heading>
+                        <Title id="_IDGenTitle2" text="{RouteSaData>/SaHeader/SchedulingAgreement}" level="H1"/>
+                    </f:heading>
+                    <f:expandedContent>
+                        <Label id="_IDGenLabel" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+
+                    </f:expandedContent>
+                    <f:snappedContent>
+                        <Label id="_IDGenLabel2" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+
+                    </f:snappedContent>
+                </f:DynamicPageTitle>
+            </f:title>
+            <f:header>
+                <f:DynamicPageHeader id="_IDGenDynamicPageHeader" >
+                    <f:content>
+                        <HBox id="_IDGenHBox1" alignItems="Center" justifyContent="Start">
+                            <VBox id="_IDGenVBox" alignItems="Start" alignContent="Center" justifyContent="Start" class="sapUiContentPadding">
+                                <Label id="_IDGenLabel3" class="labelDesin" design="Bold" text="Plant" />
+                                <!-- <Text id="idPoHeadPlant" class="sapUiTinyMarginBegin" text="{RouteSaData>/SaHeader/PlantName}"/> -->
+                                <Text id="_IDGenText42" emptyIndicatorMode="On" class="textDesin" text="{RouteSaData>/SaHeader/PlantName}({RouteSaData>/SaHeader/Plant})" />
+                            </VBox>
+                            <VBox id="_IDGenVBox2" alignItems="Start" alignContent="Center" justifyContent="Start" class="sapUiContentPadding">
+                                <Label id="_IDGenLabel13" class="labelDesin" design="Bold" text="Payment Term" />
+                                <!-- <Text id="idPoHeadSupplier" class="sapUiTinyMarginBegin" text="{RouteSaData>/SaHeader/Supplier}"/> -->
+                                <Text id="_IDGenText52" emptyIndicatorMode="On" class="textDesin" text="{RouteSaData>/SaHeader/PaymentTermsDescription}({RouteSaData>/SaHeader/PaymentTerms})" />
+                            </VBox>
+                            <VBox id="_IDGenVBox3" alignItems="Start" alignContent="Center" justifyContent="Start" class="sapUiContentPadding">
+                                <Label id="_IDGenLabel27" class="labelDesin" design="Bold" text="Validity End Date" />
+                                <!-- <Text id="idPoHeadOrderDate" class="sapUiTinyMarginBegin" text="{path: 'RouteSaData>/SaHeader/PurchaseOrderDate',formatter: '.formatter.formatDateToDDMMYYYY'}"/> -->
+                                <Text id="_IDGenText53" emptyIndicatorMode="On" class="textDesin" text="{path: 'RouteSaData>/SaHeader/ValidityEndDate',formatter: '.formatter.formatDateToDDMMYYYY'}"/>
+                            </VBox>
+                            <VBox id="_IDGenVBox4" alignItems="Start" alignContent="Center" justifyContent="Start" class="sapUiContentPadding">
+                                <Label id="_IDGenLabel28" class="labelDesin" design="Bold" text="Sales Person" />
+                                <!-- <Text id="idPoHeadSalesPerson" class="sapUiTinyMarginBegin" text="{RouteSaData>/SaHeader/SupplierRespSalesPersonName}"/> -->
+                                <Text id="_IDGenText54" class="textDesin" text="{=${RouteSaData>/SaHeader/SupplierRespSalesPersonName}?${RouteSaData>/SaHeader/SupplierRespSalesPersonName}:'NA'}" emptyIndicatorMode="On"/>
+                            </VBox>
+
+                        </HBox>
+                    </f:content>
+                </f:DynamicPageHeader>
+            </f:header>
+            <f:content>
+                <Table id="idSaItemTable" alternateRowColors="true" mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartSaHeaderTable" items="{SaItemModel>/SaItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+                    <headerToolbar>
+                        <OverflowToolbar id="_IDGenOverflowToolbar3">
+                            <Title id="_IDGenTitle5" text="Items" level="H2"/>
+                            <ToolbarSpacer id="_IDGenToolbarSpacer4" />
+                            <!-- <Button id="_IDGenButton14" tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                            <Button id="_IDGenButton15" tooltip="Filter" icon="sap-icon://filter" press="handleFilterButtonPressed"/>
+                            <Button id="_IDGenButton16" tooltip="Group" icon="sap-icon://group-2" press="handleGroupButtonPressed"/> -->
+                            <ToggleButton id="_IDGenToggleButton3" icon="sap-icon://menu" tooltip="Enable Custom Context Menu" press="onToggleContextMenu" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <infoToolbar>
+                        <OverflowToolbar id="_IDGenOverflowToolbar6" visible="false">
+                            <Text id="_IDGenText55" />
+                        </OverflowToolbar>
+                    </infoToolbar>
+                    <columns>
+                        <Column id="_IDGenColumn21" visible="false">
+                            <Text id="_IDGenText56" text="Scheduling Agreement No" />
+                        </Column>
+                        <Column id="_IDGenColumn22">
+                            <Text id="_IDGenText57" text="Item" />
+                        </Column>
+                        <Column id="_IDGenColumn23" visible="false">
+                            <Text id="_IDGenText58" text="Plant" />
+                        </Column>
+                        <Column id="_IDGenColumn24">
+                            <Text id="_IDGenText59" text="Material" />
+                        </Column>
+                        <Column id="_IDGenColumn26">
+                            <Text id="_IDGenText61" text="Scheduled Qty" />
+                        </Column>
+                        <Column id="_IDGenColumn27">
+                            <Text id="_IDGenText62" text="Delivered Qty" />
+                        </Column>
+                        <Column id="_IDGenColumn29" visible="false">
+                            <Text id="_IDGenText70" text="UOM" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="_IDGenColumnListItem2">
+                            <cells>
+                                <Text id="_IDGenText63" text="{SaItemModel>SchedulingAgreement}" />
+                                <Text id="_IDGenText64" text="{SaItemModel>SchedulingAgreementItem}" />
+                                <Text id="_IDGenText65" text="{SaItemModel>PlantName}({SaItemModel>Plant})" />
+                                <Text id="_IDGenText66" text="{SaItemModel>ItemDescription}({SaItemModel>ItemCode})" />
+                                <!-- <Text id="_IDGenText67" text="{path: 'SaItemModel>DeliveryDate', formatter: '.formatter.formatDateToDDMMYYYY'}" /> -->
+                                <Text id="_IDGenText68" text="{SaItemModel>ScheduleQty} {SaItemModel>UOM}" />
+                                <Text id="_IDGenText69" text="{SaItemModel>DeliveredQty} {SaItemModel>UOM}" />
+                                <Text id="_IDGenText71" text="{SaItemModel>UOM}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </f:content>
+        </f:DynamicPage>
+    <!-- </Page> -->
+</mvc:View>

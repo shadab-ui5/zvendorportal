@@ -1,0 +1,25 @@
+<mvc:View controllerName="hodek.vendorportal.controller.Main"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<App id="_IDGenApp">
+		<pages >
+			<Page id="idMain__Page" enableScrolling="false" title="Vendor Portal" class="MainPage" showHeader="true" showNavButton="true" navButtonPress="onNavBack">
+
+				<content>
+					<Button id="_IDGenButton21" icon="sap-icon://nav-back" type="Transparent" press="onNavBack" ariaLabelledBy="editButtonLabel"/>
+					<IconTabBar id="idIconTabBarMain" applyContentPadding="false" selectedKey="RouteVendorPortal" expandable="false" headerBackgroundDesign="Solid" select="onSelectTabItem" stretchContentHeight="true" class="ICTBCustom">
+						<items>
+							<IconTabFilter id="_IDGenIconTabFilter1" text="Purchase Order" key="RouteVendorPortal"/>
+							<IconTabFilter id="_IDGenIconTabFilter2" text="Scheduling Agreement" key="RouteSchedulingAgg" />
+							<IconTabFilter id="_IDGenIconTabFilter5" text="ASN Reprint" key="RouteAsnReprint" />
+							<IconTabFilter id="_IDGenIconTabFilter6" text="ASN Cancellation" key="RouteCancelAsn" />
+						</items>
+						<content>
+							<NavContainer id="Main__NavContainer" height="100%" width="100%"/>
+						</content>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

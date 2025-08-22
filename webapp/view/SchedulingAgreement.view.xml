@@ -1,0 +1,134 @@
+<mvc:View controllerName="hodek.vendorportal.controller.SchedulingAgreement"
+     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:svm="sap.ui.comp.smartvariants">
+
+    <Page id="saOrderpage" title="Vendor Portal" showHeader="false" showFooter="true" titleAlignment="Auto" showNavButton="false" navButtonPress="onNavBack">
+        <fb:FilterBar id="filterbarsa" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+            <fb:filterGroupItems>
+
+                <!-- 🔍 Search Field -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem1"  name="Search" label="Search" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <SearchField id="searchField" width="90%" class="" placeholder="Search..." liveChange=".onLiveChangeSa" search=".onSearchSa" />
+
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <!-- Supplier -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem2"  name="Supplier" label="Supplier" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <!-- <MultiComboBox id="idPoSupplier" selectionChange=".onSelectionChange" items="{ path: 'FilterModel>/SuppliersFromPO' }">
+                                        <core:Item id="_IDGenItem3" key="{FilterModel>}" text="{FilterModel>}" />
+                                    </MultiComboBox> -->
+                        <MultiInput id="idPoSupplier" valueHelpOnly="true" showValueHelp="true" showSuggestion="false" valueHelpRequest=".onSupplierValueHelp" width="100%" placeholder="Select Supplier(s)" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <!-- Purchase Order -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem3"  name="scheduling" label="Scheduling Agreement" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiInput id="idPoNumber" valueHelpOnly="true" showValueHelp="true" showSuggestion="false" valueHelpRequest=".onPurchaseOrderValueHelp" width="100%" placeholder="Sheduling Agreement(s)" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <!-- Purchasing Group -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem4"  name="PurchasingGroup" label="Purchasing Group" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiInput id="idPoPurchGroup" valueHelpOnly="true" showValueHelp="true" showSuggestion="false" valueHelpRequest=".onPurchasingGroupValueHelp" width="100%" placeholder="Select Purchasing Group(s)" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <!-- Company Code -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem5"  name="CompanyCode" label="Company Code" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <ComboBox id="idSaCompanyCode" items="{ path: 'CompanyCodeSaModel>/' }">
+                            <core:Item id="_IDGenItem"  key="{CompanyCodeSaModel>CompanyCode}" text="{CompanyCodeSaModel>CompanyCode}-{CompanyCodeSaModel>CompanyCodeName}" />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <!-- Plant -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem6"  name="Plant" label="Plant" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiInput id="idFilterPlant" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onPlantValueHelp" width="100%" placeholder="Select Plant(s)" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <!-- Purchase Order Date -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem10"  name="CreationDate" label="Creation Date" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <DateRangeSelection id="idPoPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+
+        </fb:FilterBar>
+        <Table id="idSaTable" alternateRowColors="true" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelSa>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+            <headerToolbar>
+                <OverflowToolbar id="_IDGenOverflowToolbar4" >
+                    <Title id="_IDGenTitle"  text="Scheduling Agreement" level="H2"/>
+                    <ToolbarSpacer id="_IDGenToolbarSpacer2" />
+                    <!-- <Button id="_IDGenButton10"  tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                    <Button id="_IDGenButton11"  tooltip="Filter" icon="sap-icon://filter" press="handleFilterButtonPressed"/>
+                    <Button id="_IDGenButton12"  tooltip="Group" icon="sap-icon://group-2" press="handleGroupButtonPressed"/>
+                    <ToggleButton id="_IDGenToggleButton2"  icon="sap-icon://menu" tooltip="Enable Custom Context Menu" press="onToggleContextMenu" /> -->
+                </OverflowToolbar>
+            </headerToolbar>
+            <infoToolbar>
+                <OverflowToolbar id="_IDGenOverflowToolbar5"  visible="false">
+                    <Text id="_IDGenText43"  />
+                </OverflowToolbar>
+            </infoToolbar>
+            <columns>
+                <Column id="_IDGenColumn14"  headerMenu="columnHeaderMenu" >
+                    <Text id="_IDGenText44"  text="SA No." />
+                </Column>
+                <Column id="_IDGenColumn15"  minScreenWidth="Tablet" demandPopin="true">
+                    <Text id="_IDGenText45"  text="Supplier" />
+                </Column>
+                <Column id="_IDGenColumn16"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenText46"  text="Validity Start" />
+                </Column>
+                <Column id="_IDGenColumn17"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center" >
+                    <Text id="_IDGenText47"  text="Validity End" />
+                </Column>
+                <Column id="_IDGenColumn18"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenText48"  text="Document Date" />
+                </Column>
+                <Column id="_IDGenColumn19"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenText49"  text="Payment Terms" />
+                </Column>
+                <Column id="_IDGenColumn20"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center" >
+                    <Text id="_IDGenText50"  text="Sales Person" />
+                </Column>
+                <Column id="_IDGenColumn201"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="false">
+                    <Text id="_IDGenText501"  text="Plant" />
+                </Column>
+                <Column id="_IDGenColumn202"  minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="false">
+                    <Text id="_IDGenText502"  text="Purchasing Document Type Name" />
+                </Column>
+
+            </columns>
+            <items>
+                <ColumnListItem id="_IDGenColumnListItem3"  vAlign="Middle" type="Navigation">
+                    <cells>
+                        <Text id="_IDGenText6"  text="{TableModelSa>SchedulingAgreement}" />
+                        <Text id="_IDGenText7"  text="{TableModelSa>SupplierName} ( {TableModelSa>Supplier} )" />
+                        <Text id="_IDGenText38"  text="{path:'TableModelSa>ValidityStartDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
+                        <Text id="_IDGenText444"  text="{path:'TableModelSa>ValidityEndDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
+                        <Text id="_IDGenText445"  text="{path:'TableModelSa>CreationDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
+                        <Text id="_IDGenText41"  text="{TableModelSa>PaymentTermsDescription}({TableModelSa>PaymentTerms})" />
+                        <Text id="_IDGenText39"  text="{TableModelSa>SupplierRespSalesPersonName}" />
+                        <Text id="_IDGenText40"  text="{TableModelSa>PlantName}({TableModelSa>Plant})" />
+                        <Text id="_IDGenText401"  text="{TableModelSa>PurchasingDocumentTypeName}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Page>
+    
+
+</mvc:View>

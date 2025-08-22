@@ -1,0 +1,249 @@
+<mvc:View controllerName="hodek.vendorportal.controller.AsnSaCreation"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:mdc="sap.ui.mdc"
+    xmlns:mdct="sap.ui.mdc.table"
+    xmlns:vm="sap.ui.fl.variants"
+    xmlns:Table1="sap.ui.mdc.table.Table"
+    xmlns:upload="sap.m.upload"
+    xmlns:mdcat="sap.ui.mdc.actiontoolbar">
+    <!-- <Page id="asnsaCreationpage" title="{i18n>title}" showFooter="true" titleAlignment="Auto" showNavButton="true" navButtonPress="onNavBack"> -->
+    <f:DynamicPage id="_IDGenDynamicPage" headerExpanded="{/headerExpanded}" showFooter="true" fitContent="true">
+        <f:title>
+            <f:DynamicPageTitle id="_IDGenDynamicPageTitle3">
+                <f:actions>
+                    <Button id="_IDGenButton24" type="Emphasized" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
+                </f:actions>
+                <f:navigationActions>
+
+                </f:navigationActions>
+                <f:heading>
+                    <Title id="_IDGenTitle7" text="{RouteSaData>/SaHeader/SchedulingAgreement}" level="H1"/>
+                </f:heading>
+                <f:expandedContent>
+                    <Label id="_IDGenLabel31" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+                </f:expandedContent>
+                <f:snappedContent>
+                    <Label id="_IDGenLabel32" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+
+                </f:snappedContent>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader id="_IDGenDynamicPageHeader3">
+                <f:content>
+                    <HBox id="_IDGenHBox9">
+                        <VBox id="_IDGenVBox29" width="20%">
+                            <Label id="_IDGenLabel38" text="Invoice Number" required="true"/>
+                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%"/>
+                        </VBox>
+
+                        <VBox id="_IDGenVBox25" width="20%">
+                            <Label id="_IDGenLabel34" text="Plant" required="true"/>
+                            <Input id="idDropdownPlant" value="{RouteSaData>/SaHeader/Plant}" enabled="false" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox26" width="20%">
+                            <Label id="_IDGenLabel35" text="SA No." required="true"/>
+                            <Input id="idRAPO_PO_Order" value="{RouteSaData>/SaHeader/SchedulingAgreement}" enabled="false" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox27" width="20%">
+                            <Label id="_IDGenLabel36" text="Date"/>
+                            <Input id="idRAPO_Date" value="{RouteSaData>/SaHeader/Date}" enabled="false" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox28" width="20%">
+                            <Label id="_IDGenLabel37" text="Time"/>
+                            <Input id="idRAPO_Time" value="{RouteSaData>/SaHeader/Time}" enabled="false" width="75%"/>
+                        </VBox>
+                    </HBox>
+                    <HBox id="_IDGenHBox10" class="sapUiTinyMarginTop">
+
+                        <VBox id="_IDGenVBox30" width="20%">
+                            <Label id="_IDGenLabel39" text="Invoice Date" required="true"/>
+                            <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox31" width="20%">
+                            <Label id="_IDGenLabel40" text="Vehical Number" required="true"/>
+                            <Input id="idRAPO_VehicalNo" maxLength="10" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox32" width="20%">
+                            <Label id="_IDGenLabel41" text="Transporter" required="true"/>
+                            <Input id="idRAPO_Trasporter" maxLength="50" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox33" width="20%">
+                            <Label id="_IDGenLabel42" text="Eway Bill Number" required="true"/>
+                            <Input id="idRAPO_EwayNo" maxLength="50" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox34" width="20%">
+                            <Label id="_IDGenLabel43" text="Eway Bill Date"/>
+                            <DatePicker id="idRAPO_EWAY_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_EWAYDate" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox id="_IDGenHBox11" class="sapUiTinyMarginTop">
+                        <VBox id="_IDGenVBox13" width="20%">
+                            <Label id="_IDGenLabel33" text="Amount" required="true"/>
+                            <Input id="idRAPO_Amount" change="onChangeRAPOAmount" type="Number" width="75%"/>
+                        </VBox>
+
+                        <VBox id="_IDGenVBox35" width="20%">
+                            <Label id="_IDGenLabel44" text="LR Number"/>
+                            <Input id="idRAPO_LR_No" maxLength="25" width="75%"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox36" width="20%">
+                            <Label id="_IDGenLabel45" text="LR Date"/>
+                            <DatePicker id="idRAPO_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox112" width="20%" visible="false">
+                            <Label id="_IDGenLabel112" text="Supplier"/>
+                            <Text id="idSupplier" text="{RouteSaData>/SaHeader/Supplier}" class="sapUiSmallMarginBottom"/>
+                        </VBox>
+                    </HBox>
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding">
+                <items>
+                    <IconTabFilter id="_IDGenIconTabFilter3" text="Items">
+                        <VBox id="_IDGenVBox14">
+                            <Table id="idTable_RAPO" alternateRowColors="true" items="{path: 'AsnSaItemsModel>/Results'}" sticky="ColumnHeaders,HeaderToolbar">
+                                <headerToolbar>
+                                    <OverflowToolbar id="_IDGenOverflowToolbar8">
+                                        <Title id="_IDGenTitle8" text="Items" level="H2"/>
+                                        <ToolbarSpacer id="_IDGenToolbarSpacer6" />
+                                        <!-- <Button id="_IDGenButton" icon="sap-icon://add" text="Add" press="onAddReceiptAsPOTableItem"/> -->
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column id="_IDGenColumn" visible="false">
+                                        <Text id="_IDGenText" text="PO No. / SA No." />
+                                    </Column>
+                                    <Column id="_IDGenColumn1">
+                                        <Text id="_IDGenText1" text="Line Item No" />
+                                    </Column>
+                                    <Column id="_IDGenColumn3">
+                                        <Text id="_IDGenText3" text="Item Code/Material" />
+                                    </Column>
+                                    <Column id="_IDGenColumn4">
+                                        <Text id="_IDGenText4" text="Item Description" />
+                                    </Column>
+                                    <Column id="_IDGenColumn5">
+                                        <Text id="_IDGenText5" text="UOM" />
+                                    </Column>
+                                    <Column id="_IDGenColumn7">
+                                        <Text id="_IDGenText11" text="Quantity" />
+                                    </Column>
+                                    <Column visible="false">
+                                        <Text text="TargetQuantity" />
+                                    </Column>
+                                    <Column visible="false">
+                                        <Text text="postedquantity" />
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem id="_IDGenColumnListItem">
+                                        <cells>
+                                            <Text id="_IDGenText60" text="{AsnSaItemsModel>SchedulingAgreement}" />
+                                            <Text id="_IDGenText67" text="{AsnSaItemsModel>SchedulingAgreementItem}"/>
+                                            <Text id="_IDGenText72" text="{AsnSaItemsModel>Material}"/>
+                                            <Text id="_IDGenText73" text="{AsnSaItemsModel>PurchasingDocumentItemText}"/>
+                                            <!-- <Input id="_IDGenInput" value="{Material}" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="material_RAPOValueHelp"/> -->
+                                            <Text id="_IDGenText74" text="{AsnSaItemsModel>OrderQuantityUnit}" />
+                                            <Input id="idInpRAPOItemQuantity" value="{AsnSaItemsModel>EnteredQuantity}" change="onChangeRAPOItemQuantity" type="Number" />
+                                            <Text text="{AsnSaItemsModel>TargetQuantity}" />
+                                            <Text text="{AsnSaItemsModel>postedquantity}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                            <VBox id="idVBox_QRCode" visible="false" width="20%">
+
+                            </VBox>
+                        </VBox>
+                    </IconTabFilter>
+                    <IconTabFilter id="_IDGenIconTabFilter4" text="Attachments">
+                        <Table id="table-uploadSet" class="sapUiNoContentPadding" sticky="ColumnHeaders,HeaderToolbar" width="auto" mode="MultiSelect" fixedLayout="false" inset="true" autoPopinMode="true" hiddenInPopin="None" items="{path: 'documents>/items', templateShareable: false}" selectionChange="onSelectionChange">
+
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <Title text="Documents ({= ${documents>/items}.length})" level="H2" />
+                                    <ToolbarSpacer />
+
+                                    <SearchField width="20%" liveChange="onSearch">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="NeverOverflow" />
+                                        </layoutData>
+                                    </SearchField>
+                                    <ToolbarSeparator />
+
+                                    <!-- Upload Button Placeholder (UI5 UploadSet integration) -->
+                                    <upload:ActionsPlaceholder id="uploadButton" placeholderFor="UploadButtonPlaceholder" />
+
+                                    <Button id="downloadSelectedButton" text="Download" enabled="false" press="onDownloadFiles" />
+                                </OverflowToolbar>
+                            </headerToolbar>
+
+                            <dependents>
+                                <plugins.UploadSetwithTable id="uploadSetTablePlugin" uploadUrl="/catalog/CatService/uploadFile" multiple="true" beforeUploadStarts="onBeforeUploadStarts" itemRenamed="onDocumentRenamedSuccess" uploadCompleted="onUploadCompleted" onActivated="onPluginActivated" cloudFilePickerEnabled="true" actions="uploadButton">
+
+                                    <rowConfiguration>
+                                        <upload.UploadItemConfiguration fileNamePath="fileName" mediaTypePath="mimeType" urlPath="url" previewablePath="previewable" fileSizePath="fileSize" isTrustedSourcePath="trustedSource" />
+                                    </rowConfiguration>
+                                </plugins.UploadSetwithTable>
+                            </dependents>
+
+                            <columns>
+                                <Column importance="High">
+                                    <header>
+                                        <Label text="File Name" />
+                                    </header>
+                                </Column>
+                                <Column>
+                                    <header>
+                                        <Label text="File Size" />
+                                    </header>
+                                </Column>
+                                <Column>
+                                    <header>
+                                        <Label text="Last Modified" />
+                                    </header>
+                                </Column>
+                                <Column importance="High" />
+                            </columns>
+
+                            <items>
+                                <ColumnListItem highlight="{= ${documents>uploadState} === 'Complete' ? 'Indication05' : null }">
+                                    <cells>
+                                        <HBox>
+                                            <Image src="{documents>imageUrl}" class="sapMUSTItemImage sapMUSTItemIcon" visible="{= ${documents>imageUrl} !== undefined}" />
+                                            <core:Icon src="{parts: ['documents>mimeType', 'documents>fileName'], formatter: '.getIconSrc'}" visible="{= ${documents>imageUrl} === undefined || ${documents>imageUrl} === '' }" class="sapMUSTItemImage sapMUSTItemIcon" />
+                                            <VBox class="sapUiTinyMargin sapUiSmallMarginBegin">
+                                                <Link text="{documents>fileName}" press="openPreview" class="sapUiTinyMarginBottom" />
+                                                <Text text="{documents>documentType}" />
+                                            </VBox>
+                                        </HBox>
+
+                                        <Text text="{parts: ['documents>fileSize'], formatter: '.getFileSizeWithUnits'}" />
+                                        <VBox>
+                                            <Text text="{documents>lastModifiedBy}" />
+                                            <Text class="sapUiTinyMarginTop" text="{documents>lastModified}" />
+                                        </VBox>
+                                        <Button class="sapUiTinyMarginBegin" type="Transparent" icon="sap-icon://delete" press="onRemoveHandler" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </f:content>
+    </f:DynamicPage>
+    <!-- </Page> -->
+</mvc:View>
