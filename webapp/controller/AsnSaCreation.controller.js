@@ -1478,7 +1478,7 @@ sap.ui.define([
                             "Material": item.Material,
                             "Materialdesc": item.PurchasingDocumentItemText,
                             "Quantity": parseFloat(item.TargetQuantity).toFixed(2),
-                            "Postedquantity": parseFloat(toPostedQuanity).toFixed(2)
+                            "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2)
                         };
                         itemData.push(obj);
                     });
