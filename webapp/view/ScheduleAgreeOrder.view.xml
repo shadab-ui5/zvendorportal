@@ -10,7 +10,7 @@
             <f:title>
                 <f:DynamicPageTitle id="_IDGenDynamicPageTitle">
                     <f:navigationActions>
-                        <Button id="_IDGenButton13" text="Next" type="Success" icon="sap-icon://open-command-field" press="onNavNext"/>
+                        <Button id="_IDGenButton13" text="Next" type="Success" icon="sap-icon://open-command-field" press="onNavNext" class="sapUiSmallMarginEnd"/>
                     </f:navigationActions>
                     <f:heading>
                         <Title id="_IDGenTitle2" text="{RouteSaData>/SaHeader/SchedulingAgreement}" level="H1"/>

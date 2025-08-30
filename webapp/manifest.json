@@ -33,6 +33,13 @@
           "localUri": "localService/mainService/metadata.xml",
           "odataVersion": "2.0"
         }
+      },
+      "capService": {
+        "uri": "/catalog/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0"
+        }
       }
     },
     "crossNavigation": {
@@ -90,6 +97,15 @@
       },
       "vendorModel": {
         "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "capModel": {
+        "dataSource": "capService",
         "preload": true,
         "settings": {
           "operationMode": "Server",

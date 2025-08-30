@@ -6,13 +6,16 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:upload="sap.m.upload"
-    xmlns:svm="sap.ui.comp.smartvariants">
+    xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns:mdc="sap.ui.mdc"
+    xmlns:mdct="sap.ui.mdc.table"
+    xmlns:vm="sap.ui.fl.variants">
     <!-- <Page id="asnCreationpage" title="{i18n>title}" showFooter="true" titleAlignment="Auto" showNavButton="true" navButtonPress="onNavBack"> -->
     <f:DynamicPage id="_IDGenDynamicPage3" stickySubheaderProvider="iconTabBar" headerExpanded="{/headerExpanded}" showFooter="true" fitContent="true">
         <f:title>
             <f:DynamicPageTitle id="_IDGenDynamicPageTitle2">
                 <f:actions>
-                    <Button id="_IDGenButton9" type="Emphasized" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
+                    <Button id="_IDGenButton9" type="Success" icon="sap-icon://save" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
                 </f:actions>
                 <f:heading>
                     <Title id="_IDGenTitle1" text="{RoutePoData>/PoHeader/PurchaseOrder}" level="H1"/>
@@ -161,53 +164,61 @@
                         </VBox>
                     </IconTabFilter>
                     <IconTabFilter id="_IDGenIconTabFilter4" text="Attachments">
-                        <Table id="table-uploadSet" class="sapUiNoContentPadding" sticky="ColumnHeaders,HeaderToolbar" width="auto" mode="MultiSelect" fixedLayout="false" inset="true" autoPopinMode="true" hiddenInPopin="None" items="{path: 'documents>/items', templateShareable: false}" selectionChange="onSelectionChange">
+                        <Table id="table-uploadSet" sticky="ColumnHeaders,HeaderToolbar" class="sapUiNoContentPadding" width="auto" mode="MultiSelect" fixedLayout="false" inset="true" autoPopinMode="true" hiddenInPopin="None" items="{path: 'documents>/items', templateShareable: false}" selectionChange="onSelectionChange">
 
                             <headerToolbar>
                                 <OverflowToolbar>
                                     <Title text="Documents ({= ${documents>/items}.length})" level="H2" />
                                     <ToolbarSpacer />
-
                                     <SearchField width="20%" liveChange="onSearch">
                                         <layoutData>
-                                            <OverflowToolbarLayoutData priority="NeverOverflow" />
+                                            <OverflowToolbarLayoutData priority="NeverOverflow"/>
                                         </layoutData>
                                     </SearchField>
                                     <ToolbarSeparator />
-
-                                    <!-- Upload Button Placeholder (UI5 UploadSet integration) -->
+                                    <!-- Upload button goes into the toolbar -->
                                     <upload:ActionsPlaceholder id="uploadButton" placeholderFor="UploadButtonPlaceholder" />
-
                                     <Button id="downloadSelectedButton" text="Download" enabled="false" press="onDownloadFiles" />
+                                    <Button id="removeDocumentButton" text="Remove" press="onRemoveButtonPress" enabled="false">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="AlwaysOverflow"/>
+                                        </layoutData>
+                                    </Button>
+                                    <Button id="renameButton" enabled="false" press="onRenameDocument" text="Rename">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="AlwaysOverflow"/>
+                                        </layoutData>
+                                    </Button>
                                 </OverflowToolbar>
                             </headerToolbar>
 
                             <dependents>
-                                <plugins.UploadSetwithTable id="uploadSetTablePlugin" uploadUrl="/catalog/CatService/uploadFile" multiple="true" beforeUploadStarts="onBeforeUploadStarts" itemRenamed="onDocumentRenamedSuccess" uploadCompleted="onUploadCompleted" onActivated="onPluginActivated" cloudFilePickerEnabled="true" actions="uploadButton">
+                                <!-- IMPORTANT: points to your CAP action path -->
+                                <plugins.UploadSetwithTable uploadUrl="/catalog/uploadFile" multiple="true" beforeUploadStarts="onBeforeUploadStarts" uploadCompleted="onUploadCompleted" onActivated="onPluginActivated" cloudFilePickerEnabled="true" actions="uploadButton">
 
                                     <rowConfiguration>
-                                        <upload.UploadItemConfiguration fileNamePath="fileName" mediaTypePath="mimeType" urlPath="url" previewablePath="previewable" fileSizePath="fileSize" isTrustedSourcePath="trustedSource" />
+                                        <upload.UploadItemConfiguration fileNamePath="fileName" mediaTypePath="mediaType" urlPath="url" previewablePath="previewable" fileSizePath="fileSize" isTrustedSourcePath="trustedSource"/>
                                     </rowConfiguration>
                                 </plugins.UploadSetwithTable>
                             </dependents>
 
                             <columns>
-                                <Column importance="High">
+                                <Column id="fileName" importance="High">
                                     <header>
-                                        <Label text="File Name" />
+                                        <Label text="File Name"/>
                                     </header>
                                 </Column>
-                                <Column>
+                                <Column id="fileSize">
                                     <header>
-                                        <Label text="File Size" />
+                                        <Label text="File Size"/>
                                     </header>
                                 </Column>
-                                <Column>
+                                <Column id="lastModified">
                                     <header>
-                                        <Label text="Last Modified" />
+                                        <Label text="Last Modified"/>
                                     </header>
                                 </Column>
-                                <Column importance="High" />
+                                <Column id="actionButton" importance="High"/>
                             </columns>
 
                             <items>
@@ -215,19 +226,21 @@
                                     <cells>
                                         <HBox>
                                             <Image src="{documents>imageUrl}" class="sapMUSTItemImage sapMUSTItemIcon" visible="{= ${documents>imageUrl} !== undefined}" />
-                                            <core:Icon src="{parts: ['documents>mimeType', 'documents>fileName'], formatter: '.getIconSrc'}" visible="{= ${documents>imageUrl} === undefined || ${documents>imageUrl} === '' }" class="sapMUSTItemImage sapMUSTItemIcon" />
+                                            <core:Icon class="sapMUSTItemImage sapMUSTItemIcon" src="{parts: ['documents>mediaType', 'documents>fileName'], formatter: '.getIconSrc'}" visible="{= ${documents>imageUrl} === undefined || ${documents>imageUrl} === '' }" />
                                             <VBox class="sapUiTinyMargin sapUiSmallMarginBegin">
-                                                <Link text="{documents>fileName}" press="openPreview" class="sapUiTinyMarginBottom" />
-                                                <Text text="{documents>documentType}" />
+                                                <Link text="{documents>fileName}" press="openPreview" class="sapUiTinyMarginBottom"/>
+                                                <!-- keep object key hidden or show as secondary line if you want -->
+                                                <Text text="{documents>objectKey}" visible="false"/>
                                             </VBox>
                                         </HBox>
 
-                                        <Text text="{parts: ['documents>fileSize'], formatter: '.getFileSizeWithUnits'}" />
+                                        <Text text="{parts: ['documents>fileSize'], formatter: '.getFileSizeWithUnits'}"/>
                                         <VBox>
-                                            <Text text="{documents>lastModifiedBy}" />
-                                            <Text class="sapUiTinyMarginTop" text="{documents>lastModified}" />
+                                            <Text text="{documents>lastModifiedBy}"/>
+                                            <Text class="sapUiTinyMarginTop" text="{documents>lastModified}"/>
                                         </VBox>
-                                        <Button class="sapUiTinyMarginBegin" type="Transparent" icon="sap-icon://delete" press="onRemoveHandler" />
+
+                                        <Button class="sapUiTinyMarginBegin" type="Transparent" icon="sap-icon://decline" press="onRemoveHandler"/>
                                     </cells>
                                 </ColumnListItem>
                             </items>

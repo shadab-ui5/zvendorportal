@@ -11,8 +11,11 @@ sap.ui.define([
     "sap/m/library",
     'sap/ui/core/library',
     "sap/ui/core/format/DateFormat",
-    "sap/m/UploadCollectionParameter",
-], (Controller, Models, Formatter, Dialog, Button, MessageBox, MessageToast, Fragment, mobileLibrary, coreLibrary, DateFormat, UploadCollectionParameter) => {
+    "sap/m/plugins/UploadSetwithTable",
+    "sap/m/Text",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Item"
+], (Controller, Models, Formatter, Dialog, Button, MessageBox, MessageToast, Fragment, mobileLibrary, coreLibrary, DateFormat, UploadSetwithTable, Text, JSONModel, CoreItem) => {
     "use strict";
     //QR & PDF in use libraries //
     jQuery.sap.require("hodek.vendorportal.model.qrCode");
@@ -24,6 +27,12 @@ sap.ui.define([
                 "$top": 200000
             };
             let that = this;
+            // init documents model
+            var oDocumentModel = new JSONModel({ items: [] });
+            this.getView().setModel(oDocumentModel, "documents");
+
+            this._fetchCSRFToken();
+            // this._refreshDocuments();
             this.selectedPOSchAggrVendor = "";
             const oModel = new sap.ui.model.json.JSONModel([]);
             this.getView().setModel(oModel, "AsnItemsModel");
@@ -1310,7 +1319,7 @@ sap.ui.define([
                     }
                     let payload = {
                         "AsnNo": "",
-                        "GateEntryId":"",
+                        "GateEntryId": "",
                         "InvoiceNo": InvoiceNo,
                         "Ponumber": purchaseOrder,
                         "Plant": Plant,
@@ -1481,139 +1490,6 @@ sap.ui.define([
             this.onNavFirstPage();
         },
 
-        _loadDocuments: async function () {
-            try {
-                const oModel = this.getOwnerComponent().getModel("catModel");
-                const aFiles = await oModel.read("/Files"); // adjust for V2 if needed
-
-                this.getView().getModel("documents").setProperty("/items", aFiles.results || aFiles.value || []);
-            } catch (err) {
-                MessageBox.error("Failed to load files: " + err.message);
-            }
-        },
-
-        /** 🔹 Before Upload - attach metadata */
-        onBeforeUploadStarts: function (oEvent) {
-            const oItem = oEvent.getParameter("item");
-            const fileName = oItem.getFileName();
-
-            // Add "slug" header to pass filename
-            oItem.addHeaderParameter(new UploadCollectionParameter({
-                name: "slug",
-                value: fileName
-            }));
-        },
-
-        /** 🔹 After upload */
-        onUploadCompleted: function (oEvent) {
-            MessageToast.show("Upload completed");
-            this._loadDocuments();
-        },
-
-        /** 🔹 Download selected files */
-        onDownloadFiles: async function () {
-            const oTable = this.byId("table-uploadSet");
-            const aSelected = oTable.getSelectedItems();
-
-            if (!aSelected.length) {
-                MessageToast.show("No file selected");
-                return;
-            }
-
-            const oModel = this.getOwnerComponent().getModel("catModel");
-
-            for (let oItem of aSelected) {
-                const fileId = oItem.getBindingContext("documents").getProperty("ID");
-
-                try {
-                    const url = await oModel.callFunction("/downloadFile", {
-                        method: "POST",
-                        urlParameters: { ID: fileId }
-                    });
-
-                    URLHelper.redirect(url, true);
-                } catch (err) {
-                    MessageBox.error("Download failed: " + err.message);
-                }
-            }
-        },
-
-        /** 🔹 Delete handler */
-        onRemoveHandler: async function (oEvent) {
-            const fileId = oEvent.getSource().getBindingContext("documents").getProperty("ID");
-
-            const oModel = this.getOwnerComponent().getModel("catModel");
-
-            try {
-                await oModel.callFunction("/deleteFile", {
-                    method: "POST",
-                    urlParameters: { ID: fileId }
-                });
-
-                MessageToast.show("File deleted");
-                this._loadDocuments();
-            } catch (err) {
-                MessageBox.error("Delete failed: " + err.message);
-            }
-        },
-
-        /** 🔹 Search in documents table */
-        onSearch: function (oEvent) {
-            const sQuery = oEvent.getParameter("newValue") || "";
-            const oTable = this.byId("table-uploadSet");
-            const oBinding = oTable.getBinding("items");
-
-            const aFilters = [];
-            if (sQuery) {
-                aFilters.push(new sap.ui.model.Filter("fileName", sap.ui.model.FilterOperator.Contains, sQuery));
-            }
-
-            oBinding.filter(aFilters);
-        },
-
-        /** 🔹 Selection change (enable/disable download button) */
-        onSelectionChange: function (oEvent) {
-            const oTable = this.byId("table-uploadSet");
-            const aSelected = oTable.getSelectedItems();
-            this.byId("downloadSelectedButton").setEnabled(aSelected.length > 0);
-        },
-
-        /** 🔹 File preview */
-        openPreview: function (oEvent) {
-            const sFileName = oEvent.getSource().getText();
-            MessageToast.show("Preview clicked for " + sFileName);
-            // Optional: Implement inline preview via iframe/pdf viewer
-        },
-
-        /** 🔹 Formatter - file size */
-        getFileSizeWithUnits: function (iSize) {
-            if (!iSize) return "0 KB";
-            let sUnit = "Bytes";
-            let iCalc = iSize;
-
-            if (iSize > 1024) {
-                iCalc = (iSize / 1024).toFixed(1);
-                sUnit = "KB";
-            }
-            if (iSize > 1024 * 1024) {
-                iCalc = (iSize / (1024 * 1024)).toFixed(1);
-                sUnit = "MB";
-            }
-            return iCalc + " " + sUnit;
-        },
-
-        /** 🔹 Formatter - icon based on MIME type */
-        getIconSrc: function (sMimeType, sFileName) {
-            if (!sMimeType && sFileName) {
-                const sExt = sFileName.split(".").pop().toLowerCase();
-                if (sExt === "pdf") return "sap-icon://pdf-attachment";
-                if (["png", "jpg", "jpeg"].includes(sExt)) return "sap-icon://attachment-photo";
-                return "sap-icon://document";
-            }
-            if (sMimeType && sMimeType.startsWith("image/")) return "sap-icon://attachment-photo";
-            if (sMimeType === "application/pdf") return "sap-icon://pdf-attachment";
-            return "sap-icon://document";
-        },
         checkQuantityInputErrors: function () {
             let oTable = this.getView().byId("idTable_RAPO");
             let bHasError = false;
@@ -1629,6 +1505,221 @@ sap.ui.define([
             });
 
             return bHasError;
+        },
+        // store plugin instance
+        onPluginActivated: function (oEvent) {
+            this._oUploadPlugin = oEvent.getParameter("oPlugin");
+        },
+
+        // icons & size
+        getIconSrc: function (sMediaType, sFileName) {
+            return UploadSetwithTable.getIconForFileType(sMediaType, sFileName);
+        },
+        getFileSizeWithUnits: function (iSize) {
+            return UploadSetwithTable.getFileSizeWithUnits(iSize);
+        },
+
+        // ===== CSRF =====
+        _fetchCSRFToken: function () {
+            var that = this;
+            jQuery.ajax({
+                url: "/catalog/",   // 👈 not $metadata
+                type: "HEAD",       // or GET
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("x-csrf-token", "Fetch");
+                },
+                success: function (_data, _status, xhr) {
+                    that._csrfToken = xhr.getResponseHeader("x-csrf-token");
+                    console.log("CSRF token fetched:", that._csrfToken);
+                },
+                error: function (xhr) {
+                    console.error("Failed to fetch CSRF token", xhr);
+                    that._csrfToken = "";
+                }
+            });
+        },
+
+        // ===== Upload =====
+        onBeforeUploadStarts: function (oEvent) {
+            var oItem = oEvent.getParameter("item");
+
+            // IMPORTANT: DO NOT set Content-Type header; the browser sets multipart boundary.
+            // Pass CSRF
+            oItem.addHeaderField(new CoreItem({
+                key: "x-csrf-token",
+                text: this._csrfToken || ""
+            }));
+
+            // If you want the original filename server-side (you already get it via multer):
+            // also pass SLUG (optional)
+            oItem.addHeaderField(new CoreItem({
+                key: "slug",
+                text: encodeURIComponent(oItem.getFileName() || "")
+            }));
+            // Field name stays "file" (UploadSet default), matches multer.single('file')
+        },
+
+        onUploadCompleted: function (oEvent) {
+            var iStatus = oEvent.getParameter("status");
+            var sRaw = oEvent.getParameter("responseRaw") || oEvent.getParameter("response");
+            var oItem = oEvent.getParameter("item");
+            var oDocsModel = this.getView().getModel("documents");
+
+            if (iStatus >= 200 && iStatus < 300) {
+                var data = {};
+                try { data = sRaw ? JSON.parse(sRaw) : {}; } catch (e) {
+                    data = (sRaw && sRaw.d) || sRaw || {};
+                }
+
+                var resp = data.value || data.d || data;
+                var objectKey = resp.objectKey || resp.ID || resp.ObjectKey;
+                var fileName = resp.fileName || (oItem && oItem.getFileName()) || "file";
+
+                var fileObj = oItem && oItem.getFileObject ? oItem.getFileObject() : null;
+
+                var aItems = oDocsModel.getProperty("/items") || [];
+                aItems.unshift({
+                    objectKey: objectKey || "",
+                    fileName: fileName,
+                    mediaType: oItem && oItem.getMediaType ? oItem.getMediaType() : "",
+                    fileSize: fileObj ? fileObj.size : null,
+                    lastModified: (fileObj && fileObj.lastModified) ? new Date(fileObj.lastModified).toISOString() : new Date().toISOString(),
+                    lastModifiedBy: "",
+                    previewable: true,
+                    trustedSource: true,
+                    uploadState: "Complete"
+                });
+                oDocsModel.setProperty("/items", aItems);
+                MessageToast.show("Upload finished: " + fileName);
+            } else {
+                MessageBox.error("Upload failed (HTTP " + iStatus + ")");
+                if (iStatus === 403) { this._fetchCSRFToken(); }
+            }
+        },
+
+        // ===== Selection & actions =====
+        onSelectionChange: function (oEvent) {
+            var aCtx = oEvent.getSource().getSelectedContexts();
+            var bAny = aCtx.length > 0;
+            var bOne = aCtx.length === 1;
+            this.byId("downloadSelectedButton").setEnabled(bAny);
+            this.byId("removeDocumentButton").setEnabled(bOne);
+            this.byId("renameButton").setEnabled(bOne);
+        },
+
+        // Download selected => get presigned URL then open
+        onDownloadFiles: function () {
+            var aCtx = this.byId("table-uploadSet").getSelectedContexts();
+            if (!aCtx || !aCtx.length) return;
+            aCtx.forEach(function (oCtx) {
+                var key = oCtx.getProperty("objectKey");
+                this._requestPresignedUrlAndOpen(key);
+            }.bind(this));
+        },
+
+        openPreview: function (oEvent) {
+            var oCtx = oEvent.getSource().getBindingContext("documents");
+            if (!oCtx) return;
+            this._requestPresignedUrlAndOpen(oCtx.getProperty("objectKey"));
+        },
+
+        _requestPresignedUrlAndOpen: function (sObjectKey) {
+            var that = this;
+            if (!sObjectKey) { MessageToast.show("No object key."); return; }
+
+            jQuery.ajax({
+                url: "/catalog/downloadFile",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ ID: sObjectKey }),
+                headers: { "x-csrf-token": this._csrfToken || "" },
+                success: function (res) {
+                    var url = (typeof res === "string") ? res :
+                        (res && res.value) ||
+                        (res && res.d && (res.d.downloadFile || res.d.value));
+                    if (url) {
+                        window.open(url, "_blank");
+                    } else {
+                        MessageBox.warning("Service returned no URL.");
+                    }
+                },
+                error: function (xhr) {
+                    MessageBox.error("Download failed: " + (xhr.responseText || xhr.statusText));
+                    if (xhr.status === 403) { that._fetchCSRFToken(); }
+                }
+            });
+        },
+
+        // Delete
+        onRemoveButtonPress: function () {
+            var aCtx = this.byId("table-uploadSet").getSelectedContexts();
+            if (aCtx && aCtx.length === 1) this._confirmAndDelete(aCtx[0]);
+        },
+        onRemoveHandler: function (oEvent) {
+            var oCtx = oEvent.getSource().getBindingContext("documents");
+            if (oCtx) this._confirmAndDelete(oCtx);
+        },
+        _confirmAndDelete: function (oCtx) {
+            var oDoc = oCtx.getObject();
+            var that = this;
+            MessageBox.warning("Remove document \"" + (oDoc.fileName || oDoc.objectKey) + "\" ?", {
+                actions: ["Remove", MessageBox.Action.CANCEL],
+                emphasizedAction: "Remove",
+                onClose: function (sAction) {
+                    if (sAction !== "Remove") return;
+
+                    jQuery.ajax({
+                        url: "/catalog/deleteFile",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ ID: oDoc.objectKey }),
+                        headers: { "x-csrf-token": that._csrfToken || "" },
+                        success: function (res) {
+                            var ok = (res === true) || (res && res.value === true) ||
+                                (res && res.d && (res.d.deleteFile === true || res.d.value === true));
+                            if (ok) {
+                                var oModel = that.getView().getModel("documents");
+                                var a = oModel.getProperty("/items") || [];
+                                var idx = a.indexOf(oDoc);
+                                if (idx > -1) { a.splice(idx, 1); oModel.setProperty("/items", a); }
+                                MessageToast.show("Document removed.");
+                            } else {
+                                MessageBox.error("Deletion not confirmed by service.");
+                            }
+                        },
+                        error: function (xhr) {
+                            MessageBox.error("Delete failed: " + (xhr.responseText || xhr.statusText));
+                            if (xhr.status === 403) { that._fetchCSRFToken(); }
+                        }
+                    });
+                }
+            });
+        },
+
+        // Client-side rename (no backend action provided)
+        onRenameDocument: function () {
+            var aCtx = this.byId("table-uploadSet").getSelectedContexts();
+            if (aCtx && aCtx.length === 1 && this._oUploadPlugin) {
+                this._oUploadPlugin.renameItem(aCtx[0]);
+            }
+        },
+        onDocumentRenamedSuccess: function (oEvent) {
+            var oItem = oEvent.getParameter("item");
+            var oCtx = oItem.getBindingContext("documents");
+            if (oCtx) {
+                var oDoc = oCtx.getObject();
+                oDoc.fileName = oItem.getFileName();
+                this.getView().getModel("documents").refresh(true);
+                MessageToast.show("Document renamed.");
+            }
+        },
+
+        // Search
+        onSearch: function (oEvent) {
+            var sQuery = oEvent.getSource().getValue() || "";
+            var oBinding = this.byId("table-uploadSet").getBinding("items");
+            var aFilters = sQuery ? [new Filter("fileName", FilterOperator.Contains, sQuery)] : [];
+            oBinding.filter(aFilters, "Application");
         }
 
 

@@ -22,6 +22,11 @@ server:
             # destination: CONNECT_DEV080
             url: https://my424380.s4hana.cloud.sap
             destination: CONNECT_CUST100
+
+          - authenticationType: oauth2
+            path: /catalog
+            destination: vendorObjectStore-srv
+            url: /odata/v2/cat/   # relative path appended to destination
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

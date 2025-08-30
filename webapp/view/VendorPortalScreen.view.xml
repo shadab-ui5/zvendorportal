@@ -70,7 +70,7 @@
             <Table id="idProductsTable" alternateRowColors="true" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelPO>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
                 <headerToolbar>
                     <OverflowToolbar id="_IDGenOverflowToolbar1">
-                        <Title id="_IDGenTitle3" text="Purchase Orders" level="H2"/>
+                        <Title id="_IDGenTitle3" text="Purchase Order" level="H2"/>
                         <ToolbarSpacer id="_IDGenToolbarSpacer"/>
                         <!-- <Button id="_IDGenButton" tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
                     <Button id="_IDGenButton1" tooltip="Filter" icon="sap-icon://filter" press="handleFilterButtonPressed"/>
