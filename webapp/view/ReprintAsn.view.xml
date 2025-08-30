@@ -36,9 +36,9 @@
         <Table id="idAsnTable" alternateRowColors="true" growing="true" mode="SingleSelectLeft" multiSelectMode="ClearAll" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{AsnHeaderModel>/AsnData}" itemPress="onLineItemPress" selectionChange="onSelectionChange" sticky="ColumnHeaders,HeaderToolbar">
             <headerToolbar>
                 <OverflowToolbar id="_IDGenOverflowToolbar1">
-                    <Title id="_IDGenTitle3" text="ASN Reprint Table" level="H2"/>
+                    <Title id="_IDGenTitle3" text="ASN Details" level="H2"/>
                     <ToolbarSpacer id="_IDGenToolbarSpacer"/>
-                    <Button id="idActionReprint" tooltip="Reprint" text="Re-print" icon="sap-icon://print" press="handleReprint" enabled="false"/>
+                    <Button id="idActionReprint" tooltip="Reprint" type="Emphasized" text="Re-print" icon="sap-icon://print" press="handleReprint" enabled="false"/>
                 </OverflowToolbar>
             </headerToolbar>
             <infoToolbar>

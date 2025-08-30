@@ -17,7 +17,7 @@
         <f:title>
             <f:DynamicPageTitle id="_IDGenDynamicPageTitle3">
                 <f:actions>
-                    <Button id="_IDGenButton24" type="Emphasized" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
+                    <Button id="_IDGenButton24" type="Success" icon="sap-icon://save" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
                 </f:actions>
                 <f:navigationActions>
 

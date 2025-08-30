@@ -7,3 +7,16 @@
     font-weight: 500;
 }
 
+.ICTBCustom > .sapMITH {
+    background-color: aliceblue !important;
+}
+
+.ICTBCustom .sapMITBText {
+    font-size: 1.1rem !important;
+}
+
+/* Increase Page Title font size */
+.MainPage .sapMTitle {
+    font-size: 1.2rem !important;   /* adjust as needed */
+    font-weight: 600;               /* optional: make it bolder */
+}

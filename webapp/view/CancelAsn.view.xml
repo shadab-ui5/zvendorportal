@@ -38,9 +38,9 @@
         <Table id="idAsnTableCancel" alternateRowColors="true" growing="true" mode="SingleSelectLeft" multiSelectMode="ClearAll" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{AsnHeaderModel>/AsnData}" itemPress="onLineItemPress" selectionChange="onSelectionChange" sticky="ColumnHeaders,HeaderToolbar">
             <headerToolbar>
                 <OverflowToolbar id="_IDGenOverflowToolbar1">
-                    <Title id="_IDGenTitle3" text="ASN Cancellation Table" level="H2"/>
+                    <Title id="_IDGenTitle3" text="ASN Details" level="H2"/>
                     <ToolbarSpacer id="_IDGenToolbarSpacer"/>
-                    <Button id="idActionReprint" tooltip="Reprint" text="Cancel Asn" icon="sap-icon://cancel" press="handleCancel" enabled="false"/>
+                    <Button id="idActionReprint" tooltip="Cancel" type="Emphasized" text="Cancel Asn" icon="sap-icon://cancel" press="handleCancel" enabled="false"/>
                 </OverflowToolbar>
             </headerToolbar>
             <infoToolbar>
