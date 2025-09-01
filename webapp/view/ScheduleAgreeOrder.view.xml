@@ -13,14 +13,14 @@
                         <Button id="_IDGenButton13" text="Next" type="Success" icon="sap-icon://open-command-field" press="onNavNext" class="sapUiSmallMarginEnd"/>
                     </f:navigationActions>
                     <f:heading>
-                        <Title id="_IDGenTitle2" text="{RouteSaData>/SaHeader/SchedulingAgreement}" level="H1"/>
+                        <Title id="_IDGenTitle2" class="labelDesin" text="{RouteSaData>/SaHeader/SchedulingAgreement}"/>
                     </f:heading>
                     <f:expandedContent>
-                        <Label id="_IDGenLabel" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+                        <Label id="_IDGenLabel" class="textDesin" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
 
                     </f:expandedContent>
                     <f:snappedContent>
-                        <Label id="_IDGenLabel2" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+                        <Label id="_IDGenLabel2" class="textDesin" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
 
                     </f:snappedContent>
                 </f:DynamicPageTitle>

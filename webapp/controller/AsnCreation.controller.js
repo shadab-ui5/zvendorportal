@@ -1311,6 +1311,7 @@ sap.ui.define([
                     let payload = {
                         "AsnNo": "",
                         "GateEntryId":"",
+                        "Inwardtype": "RECPO",
                         "InvoiceNo": InvoiceNo,
                         "Ponumber": purchaseOrder,
                         "Plant": Plant,

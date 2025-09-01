@@ -23,13 +23,13 @@
 
                 </f:navigationActions>
                 <f:heading>
-                    <Title id="_IDGenTitle7" text="{RouteSaData>/SaHeader/SchedulingAgreement}" level="H1"/>
+                    <Title id="_IDGenTitle7" class="labelDesin" text="{RouteSaData>/SaHeader/SchedulingAgreement}"/>
                 </f:heading>
                 <f:expandedContent>
-                    <Label id="_IDGenLabel31" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+                    <Label id="_IDGenLabel31" class="textDesin" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
                 </f:expandedContent>
                 <f:snappedContent>
-                    <Label id="_IDGenLabel32" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
+                    <Label id="_IDGenLabel32" class="textDesin" text="{=${RouteSaData>/SaHeader/PurchasingDocumentTypeName}?${RouteSaData>/SaHeader/PurchasingDocumentTypeName}:'NA'}"/>
 
                 </f:snappedContent>
             </f:DynamicPageTitle>
@@ -108,7 +108,7 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding">
+            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding filterbarTabAsn">
                 <items>
                     <IconTabFilter id="_IDGenIconTabFilter3" text="Items">
                         <VBox id="_IDGenVBox14">

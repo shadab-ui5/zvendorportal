@@ -1,22 +1,59 @@
 /* Enter your custom styles here */
-.labelDesin{
+/* Increase Page Title font size */
+.MainPage .sapMTitle {
+    font-size: 1.4rem !important;
+    /* adjust as needed */
+    font-weight: 600;
+    /* optional: make it bolder */
+}
+
+.labelDesin {
     font-size: 1.4rem !important;
 }
-.textDesin{
+
+.textDesin {
     font-size: 1.3rem !important;
     font-weight: 500;
 }
 
-.ICTBCustom > .sapMITH {
-    background-color: aliceblue !important;
+.ICTBCustom>.sapMITH {
+    background: linear-gradient(90deg, #0057d2 0%, rgba(0, 87, 210, 0.5) 75%, #0057d2 100%), lightgray url(../images/GlobalActionBar.jpg) 0% 0% repeat;
+    background-size: cover;
+    color: white;
 }
 
 .ICTBCustom .sapMITBText {
     font-size: 1.1rem !important;
+    font-weight: 600;
+    color: whitesmoke !important;
+    /* smokewhite */
 }
 
-/* Increase Page Title font size */
-.MainPage .sapMTitle {
-    font-size: 1.2rem !important;   /* adjust as needed */
-    font-weight: 600;               /* optional: make it bolder */
+/* Selected tab text */
+.ICTBCustom .sapMITBFilter.sapMITBSelected .sapMITBText {
+    color: #ffffff !important;
+    /* pure white */
+    font-weight: 600;
+    /* stronger emphasis */
+}
+
+.ICTBCustom .sapMITBSelected .sapMITBContentArrow::after {
+    background: white !important;
+}
+
+.filterbarTabAsn .sapMITBText {
+
+    color: rgb(0, 0, 0) !important;
+    /* smokewhite */
+}
+
+/* Selected tab text */
+.filterbarTabAsn .sapMITBFilter.sapMITBSelected .sapMITBText {
+    color: rgb(3, 100, 197) !important;
+    /* pure white */
+    /* stronger emphasis */
+}
+
+.filterbarTabAsn .sapMITBSelected .sapMITBContentArrow::after {
+    background: rgb(3, 100, 197) !important;
 }

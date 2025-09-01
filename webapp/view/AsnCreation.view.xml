@@ -15,15 +15,15 @@
                     <Button id="_IDGenButton9" type="Success" icon="sap-icon://save" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
                 </f:actions>
                 <f:heading>
-                    <Title id="_IDGenTitle1" text="{RoutePoData>/PoHeader/PurchaseOrder}" level="H1"/>
+                    <Title id="_IDGenTitle1" class="labelDesin" text="{RoutePoData>/PoHeader/PurchaseOrder}"/>
                 </f:heading>
                 <f:expandedContent>
                     <HBox id="_IDGenHBox4" width="100%" justifyContent="SpaceBetween">
-                        <Label id="_IDGenLabel14" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
+                        <Label id="_IDGenLabel14" class="textDesin" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
                     </HBox>
                 </f:expandedContent>
                 <f:snappedContent>
-                    <Label id="_IDGenLabel22" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
+                    <Label id="_IDGenLabel22" class="textDesin" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
 
                 </f:snappedContent>
             </f:DynamicPageTitle>
@@ -101,7 +101,7 @@
         </f:header>
         <f:content >
 
-            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding">
+            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding filterbarTabAsn">
                 <items>
                     <IconTabFilter id="_IDGenIconTabFilter3" text="Items">
                         <VBox id="_IDGenVBox14">

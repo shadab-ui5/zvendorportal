@@ -13,14 +13,14 @@
                         <Button id="_IDGenButton4" text="Next" type="Success" icon="sap-icon://open-command-field" press="onNavNext" class="sapUiSmallMarginEnd"/>
                     </f:navigationActions>
                     <f:heading>
-                        <Title id="_IDGenTitle4" text="{RoutePoData>/PoHeader/PurchaseOrder}" level="H1"/>
+                        <Title id="_IDGenTitle4" class="labelDesin" text="{RoutePoData>/PoHeader/PurchaseOrder}"/>
                     </f:heading>
                     <f:expandedContent>
-                        <Label id="_IDGenLabel15" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
+                        <Label id="_IDGenLabel15" class="textDesin" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
 
                     </f:expandedContent>
                     <f:snappedContent>
-                        <Label id="_IDGenLabel16" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
+                        <Label id="_IDGenLabel16" class="textDesin" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
 
                     </f:snappedContent>
                 </f:DynamicPageTitle>
