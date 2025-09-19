@@ -20,7 +20,7 @@
             <ColumnListItem>
                 <cells>
                     <Text text="{PlantModelVh>Plant}" />
-                    <Text text="{PlantModelVh>PlantName}" />
+                    <Text text="{PlantModelVh>Plantname}" />
                 </cells>
             </ColumnListItem>
         </items>

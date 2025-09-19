@@ -25,7 +25,7 @@ sap.ui.define([
 
             this.oBusyDialog = new sap.m.BusyDialog({ text: "Loading Filters.." });
             this.oBusyDialog.open();
-this.loginUser="";
+            this.loginUser = "";
             let that = this;
             const oPoModelVh = new sap.ui.model.json.JSONModel();
             const oSupplierVHModel = new sap.ui.model.json.JSONModel([]);
@@ -50,7 +50,7 @@ this.loginUser="";
                 });
             } else {
                 console.warn("Not running in Fiori Launchpad, using fallback user");
-                that.loginUser= "CB9980000026"; // fallback or hardcoded for local testing
+                that.loginUser = "CB9980000026"; // fallback or hardcoded for local testing
                 Models.getUserInfo(that, that.loginUser).then((oData) => {
                     const uniqueGroups = [...new Map(oData.results.map(obj => [obj.PurchasingGroup, obj])).values()];
 
@@ -353,7 +353,7 @@ this.loginUser="";
                 // Fallback: hit the service
                 this._oPlantDialog.setBusy(true);
 
-                Models._loadPlants(this,sQuery, 0, 2000, (aData) => {
+                Models._loadPlants(this, sQuery, 0, 2000, (aData) => {
                     const uniqueResults = aData.results.filter((item, index, self) =>
                         index === self.findIndex(t => JSON.stringify(t) === JSON.stringify(item))
                     );
