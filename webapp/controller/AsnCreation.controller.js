@@ -1300,7 +1300,8 @@ sap.ui.define([
                             "Material": item.Material,
                             "Materialdesc": item.PurchaseOrderItemText,
                             "Quantity": parseFloat(item.OrderQuantity).toFixed(2),
-                            "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2)
+                            "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
+                            "Uom":item.BaseUnit
                         };
                         itemData.push(obj);
                     });
