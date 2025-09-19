@@ -515,7 +515,7 @@ sap.ui.define([
                     let oSearch = new sap.ui.model.Filter({
                         filters: [
                             new sap.ui.model.Filter("Plant", "Contains", sQuery),
-                            new sap.ui.model.Filter("PlantName", "Contains", sQuery)
+                            new sap.ui.model.Filter("Plantname", "Contains", sQuery)
                         ],
                         and: false
                     });
