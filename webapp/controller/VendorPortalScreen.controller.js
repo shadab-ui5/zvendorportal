@@ -379,6 +379,8 @@ sap.ui.define([
                     }));
                 });
             }
+            this._oPlantDialog.close();
+            
         },
         applyDynamicFilter: function (oBinding, sQuery, aFieldNames) {
             let aFilters = aFieldNames.map(sField =>

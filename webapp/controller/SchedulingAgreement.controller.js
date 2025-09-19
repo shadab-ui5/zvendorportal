@@ -302,9 +302,9 @@ sap.ui.define([
         onPlantValueHelp: function () {
             let oView = this.getView();
 
-            if (!this._oPlantDialog) {
-                this._oPlantDialog = sap.ui.xmlfragment("hodek.vendorportal.fragments.PlantValueHelp", this);
-                oView.addDependent(this._oPlantDialog);
+            if (!this._oPlantDialogSa) {
+                this._oPlantDialogSa = sap.ui.xmlfragment("hodek.vendorportal.fragments.PlantValueHelpSa", this);
+                oView.addDependent(this._oPlantDialogSa);
             }
 
             this._plantSearchQuery = "";
@@ -313,7 +313,7 @@ sap.ui.define([
             this._plantDialogOpened = false;
             this._plantInitialLoadDone = false;
 
-            this._oPlantDialog.setBusy(true);
+            this._oPlantDialogSa.setBusy(true);
 
             Models._loadPlants(this, "", 0, 2000, (aData) => {
                 const uniqueResults = aData.results.filter((item, index, self) =>
@@ -324,8 +324,8 @@ sap.ui.define([
                 this._plantSkip += aData.length;
                 this._plantDialogOpened = true;
                 this._plantInitialLoadDone = true;
-                this._oPlantDialog.setBusy(false);
-                this._oPlantDialog.open();
+                this._oPlantDialogSa.setBusy(false);
+                this._oPlantDialogSa.open();
             });
         },
         onPlantSearch: function (oEvent) {
@@ -350,7 +350,7 @@ sap.ui.define([
 
             } else {
                 // Fallback: hit the service
-                this._oPlantDialog.setBusy(true);
+                this._oPlantDialogSa.setBusy(true);
 
                 Models._loadPlants(this, sQuery, 0, 2000, (aData) => {
                     const uniqueResults = aData.results.filter((item, index, self) =>
@@ -360,7 +360,7 @@ sap.ui.define([
                     oModel.setProperty("/Plants", uniqueResults);
                     this._plantSkip += aData.length;
                     this._plantHasMore = aData.length === 2000;
-                    this._oPlantDialog.setBusy(false);
+                    this._oPlantDialogSa.setBusy(false);
                 });
             }
         },
