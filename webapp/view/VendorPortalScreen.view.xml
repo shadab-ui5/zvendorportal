@@ -61,7 +61,7 @@
                     <!-- Purchase Order Date -->
                     <fb:FilterGroupItem id="_IDGenFilterGroupItem13" name="PurchaseOrderDate" label="Purchase Order Date" groupName="Group1" visibleInFilterBar="true">
                         <fb:control>
-                            <DateRangeSelection id="idPoPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
+                            <DateRangeSelection id="idPoPurchDate" class="DRS1" displayFormat="dd-MM-yyyy" change="handleChange"/>
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>

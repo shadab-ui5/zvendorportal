@@ -110,10 +110,10 @@ sap.ui.define([
             searchPoHeader: function (_this, oView, oModel, oTableModel) {
                 const aFilters = [];
                 let oStartDateFormat = DateFormat.getInstance({
-                    pattern: "yyyy-MM-dd'T'00:00:00"
+                    pattern: "yyyy-MM-dd"
                 });
                 let oEndDateFormat = DateFormat.getInstance({
-                    pattern: "yyyy-MM-dd'T'23:59:59"
+                    pattern: "yyyy-MM-dd"
                 });
                 // Supplier (MultiComboBox)
                 const aSelectedSuppliers = oView.byId("idPoSupplier").getTokens().map(function (oToken) {
@@ -508,8 +508,8 @@ sap.ui.define([
                 let oModel = _this.getOwnerComponent().getModel("vendorModel");
 
                 let sUser = sap.ushell?.Container?.getUser().getId() || "CB9980000018";
-                // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
-                let aFilters = [];
+                let aFilters = [new sap.ui.model.Filter("Userid", "EQ", sUser)];
+                // let aFilters = [];
 
                 if (sQuery) {
                     let oSearch = new sap.ui.model.Filter({
@@ -522,7 +522,7 @@ sap.ui.define([
                     aFilters.push(oSearch);
                 }
 
-                oModel.read("/plantVh", {
+                oModel.read("/UserIdToPlant", {
                     filters: aFilters,
                     urlParameters: {
                         "$top": iTop,

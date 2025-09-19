@@ -306,7 +306,7 @@ sap.ui.define([
         onSubmitRemark: function () {
             let oData = this.getView().getModel().getData();
             if (!oData.Remark.trim()) {
-                sap.m.MessageToast.show("Please enter a remark.");
+                sap.m.MessageToast.show("Please enter a reason for cancellation.");
                 return;
             }
             let that = this;

@@ -25,7 +25,7 @@ sap.ui.define([
 
             this.oBusyDialog = new sap.m.BusyDialog({ text: "Loading Filters.." });
             this.oBusyDialog.open();
-
+this.loginUser="";
             let that = this;
             const oPoModelVh = new sap.ui.model.json.JSONModel();
             const oSupplierVHModel = new sap.ui.model.json.JSONModel([]);
@@ -35,8 +35,8 @@ sap.ui.define([
             this.getOwnerComponent().setModel(oPoModelVh, "PoModelVh");
             if (sap.ushell && sap.ushell.Container) {
                 sap.ushell.Container.getServiceAsync("UserInfo").then(function (UserInfo) {
-                    let loginUser = UserInfo.getId();
-                    Models.getUserInfo(that, loginUser).then((oData) => {
+                    that.loginUser = UserInfo.getId();
+                    Models.getUserInfo(that, that.loginUser).then((oData) => {
                         const uniqueGroups = [...new Map(oData.results.map(obj => [obj.PurchasingGroup, obj])).values()];
 
                         that.getOwnerComponent().getModel("PgVHModel").setData(uniqueGroups);
@@ -50,8 +50,8 @@ sap.ui.define([
                 });
             } else {
                 console.warn("Not running in Fiori Launchpad, using fallback user");
-                let loginUser = "CB9980000026"; // fallback or hardcoded for local testing
-                Models.getUserInfo(that, loginUser).then((oData) => {
+                that.loginUser= "CB9980000026"; // fallback or hardcoded for local testing
+                Models.getUserInfo(that, that.loginUser).then((oData) => {
                     const uniqueGroups = [...new Map(oData.results.map(obj => [obj.PurchasingGroup, obj])).values()];
 
                     that.getOwnerComponent().getModel("PgVHModel").setData(uniqueGroups);
@@ -88,7 +88,7 @@ sap.ui.define([
                 if (aCompanyCodes?.length === 1) {
                     this.getView().byId("idPoCompanyCode").setSelectedKey(aCompanyCodes[0].CompanyCode);
                 }
-
+                that.onFilterGo();
                 that.oBusyDialog.close();
             }).catch((oError) => {
                 that.oBusyDialog.close();
@@ -353,7 +353,7 @@ sap.ui.define([
                 // Fallback: hit the service
                 this._oPlantDialog.setBusy(true);
 
-                Models._loadPlants(this, sQuery, 0, 2000, (aData) => {
+                Models._loadPlants(this,sQuery, 0, 2000, (aData) => {
                     const uniqueResults = aData.results.filter((item, index, self) =>
                         index === self.findIndex(t => JSON.stringify(t) === JSON.stringify(item))
                     );
