@@ -212,7 +212,7 @@ sap.ui.define([
 
             if (aFilteredPo.length > 0) {
                 // Use filtered data from local cache
-                this.applyDynamicFilter(oEvent.getSource().getBinding("items"), sQuery, ["Plant", "CompanyCode", "PurchasingGroup", "Supplier", "PurchaseOrder"]);
+                this.applyDynamicFilter(oEvent.getSource().getBinding("items"), sQuery, ["Plant", "CompanyCode", "PurchasingGroup", "Supplier", "SchedulingAgreement"]);
 
             } else {
                 this._oPoDialog.setBusy(true);

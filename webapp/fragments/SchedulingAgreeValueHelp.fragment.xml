@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
    <TableSelectDialog
         id="saSelectDialog"
-        title="Select Purchase Order"
+        title="Select Scheduling Agreement"
         growing="true"
         growingThreshold="20"
         multiSelect="true"

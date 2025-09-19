@@ -546,7 +546,7 @@ sap.ui.define([
 
                         // ✅ Single-pass processing
                         oData.results.forEach(item => {
-                            if (item.status === "02") return; // Skip invalid items early
+
 
                             const key = item.PurchaseOrder + "-" + item.PurchaseOrderItem;
 
@@ -556,8 +556,10 @@ sap.ui.define([
                                 filteredResults.push(grouped[key]); // Keep reference in results
                             }
 
-                            // Accumulate postedquantity
-                            grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
+                            // Accumulate postedquantity ONLY if not status 02
+                            if (item.status !== "02") {
+                                grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
+                            }
                         });
 
 
@@ -589,7 +591,7 @@ sap.ui.define([
 
                         // ✅ Single-pass processing
                         oData.results.forEach(item => {
-                            if (item.status === "02") return; // Skip invalid items early
+
 
                             const key = item.SchedulingAgreement + "-" + item.SchedulingAgreementItem;
 
@@ -599,8 +601,11 @@ sap.ui.define([
                                 filteredResults.push(grouped[key]); // Keep reference in results
                             }
 
-                            // Accumulate postedquantity
-                            grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
+                            // Accumulate postedquantity ONLY if not status 02
+                            if (item.status !== "02") {
+                                grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
+                            }
+
                         });
 
 

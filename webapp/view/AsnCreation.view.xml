@@ -57,7 +57,7 @@
 
                         <VBox id="_IDGenVBox6" width="20%">
                             <Label id="_IDGenLabel6" text="Invoice Date" required="true"/>
-                            <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                            <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox id="_IDGenVBox7" width="20%">
                             <Label id="_IDGenLabel7" text="Vehical Number" required="true"/>
@@ -73,7 +73,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox24" width="20%">
                             <Label id="_IDGenLabel29" text="Eway Bill Date"/>
-                            <DatePicker id="idRAPO_EWAY_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_EWAYDate" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                            <DatePicker id="idRAPO_EWAY_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_EWAYDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                     </HBox>
 
@@ -88,7 +88,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox11" width="20%">
                             <Label id="_IDGenLabel11" text="LR Date"/>
-                            <DatePicker id="idRAPO_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                            <DatePicker id="idRAPO_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox id="_IDGenVBox111" width="20%" visible="false">
                             <Label id="_IDGenLabel111" text="Supplier"/>
