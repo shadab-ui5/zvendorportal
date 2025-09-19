@@ -347,7 +347,7 @@ sap.ui.define([
 
             if (aFilteredPlants.length > 0) {
                 // Use filtered data from local cache
-                this.applyDynamicFilter(oEvent.getSource().getBinding("items"), sQuery, ["PlantName", "Plant"]);
+                this.applyDynamicFilter(oEvent.getSource().getBinding("items"), sQuery, ["Plantname", "Plant"]);
 
             } else {
                 // Fallback: hit the service
