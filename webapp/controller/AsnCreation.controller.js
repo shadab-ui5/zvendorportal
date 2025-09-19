@@ -194,7 +194,7 @@ sap.ui.define([
             });
 
 
-            this.f4HelpModel.read("/asnHdr", {
+            this.f4HelpModel.read("/validateInvoice", {
                 filters: [aFinalFilter],
                 success: function (oResponse) {
                     if (oResponse.results.length > 0) {
