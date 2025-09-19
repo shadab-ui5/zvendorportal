@@ -102,6 +102,10 @@
                             <Label id="_IDGenLabel112" text="Supplier"/>
                             <Text id="idSupplier" text="{RouteSaData>/SaHeader/Supplier}" class="sapUiSmallMarginBottom"/>
                         </VBox>
+                        <VBox id="_IDGenVBox1123" width="20%" visible="false">
+                            <Label id="_IDGenLabel1123" text="Supplier"/>
+                            <Text id="idSupplierName" text="{RoutePoData>/PoHeader/SupplierName}" class="sapUiSmallMarginBottom"/>
+                        </VBox>
                     </HBox>
 
                 </f:content>
