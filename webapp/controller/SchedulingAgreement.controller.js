@@ -374,7 +374,7 @@ sap.ui.define([
                     let oData = oContext.getObject();
                     oMultiInput.addToken(new sap.m.Token({
                         key: oData.Plant,
-                        text: oData.PlantName
+                        text: oData.Plantname
                     }));
                 });
             }
