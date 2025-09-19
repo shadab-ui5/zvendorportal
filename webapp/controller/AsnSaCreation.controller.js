@@ -23,7 +23,7 @@ sap.ui.define([
                 "$top": 200000
             };
             let that = this;
-             const oModel = new sap.ui.model.json.JSONModel([]);
+            const oModel = new sap.ui.model.json.JSONModel([]);
             this.getView().setModel(oModel, "AsnSaItemsModel");
             this.selectedPOSchAggrVendor = "";
             this.selected_Po_Scheduling_Type = undefined;
@@ -191,7 +191,7 @@ sap.ui.define([
                 ],
                 and: true
             });
-            
+
 
             this.f4HelpModel.read("/validateInvoice", {
                 filters: [aFinalFilter],
@@ -1480,7 +1480,7 @@ sap.ui.define([
                             "Materialdesc": item.PurchasingDocumentItemText,
                             "Quantity": parseFloat(item.TargetQuantity).toFixed(2),
                             "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
-                            "Uom":item.OrderQuantityUnit
+                            "Uom": item.OrderQuantityUnit
                         };
                         itemData.push(obj);
                     });
@@ -1491,7 +1491,7 @@ sap.ui.define([
                     let payload = {
                         "AsnNo": "",
                         "Inwardtype": "RECPO",
-                        "GateEntryId":"",
+                        "GateEntryId": "",
                         "InvoiceNo": InvoiceNo,
                         "Ponumber": purchaseOrder,
                         "Plant": Plant,
@@ -1507,7 +1507,7 @@ sap.ui.define([
                         "Vehicleno": Vehicleno,
                         "Transporter": Transporter,
                         "Status": "01",
-                        "Vendorname":supplierName,
+                        "Vendorname": supplierName,
                         "to_Item": itemData
                     };
 
@@ -1612,7 +1612,7 @@ sap.ui.define([
             var jsPDF = window.jspdf.jsPDF;
             //var doc = new jsPDF();
             var doc = new jsPDF('l', 'mm', [50, 25]);
-const supplierName = this.getOwnerComponent().getModel("RouteSaData").getProperty("/SaHeader/SupplierName");
+            const supplierName = this.getOwnerComponent().getModel("RouteSaData").getProperty("/SaHeader/SupplierName");
             let invDate = new Date(qrData.InvoiceDate);
             let formattedInvDate = invDate.getDate().toString().padStart(2, '0') + '/' +
                 (invDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
@@ -1636,8 +1636,10 @@ const supplierName = this.getOwnerComponent().getModel("RouteSaData").getPropert
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 17, `Supplier: ${supplierName} ( ${qrData.Vendor} )`);
-
+            // doc.text(2, 17, `Supplier: ${supplierName} ( ${qrData.Vendor} )`);
+            let vendorText = `Supplier: ${supplierName} ( ${qrData.Vendor} )`;
+            let wrappedVendor = doc.splitTextToSize(vendorText, 40);
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`ASN_${qrData.AsnNo}.pdf`);
         },
