@@ -11,13 +11,17 @@ sap.ui.define([
     'sap/ui/core/library',
     "sap/ui/core/format/DateFormat",
     "sap/m/UploadCollectionParameter",
-], (Controller, Models, Formatter, Dialog, Button, MessageBox, MessageToast, Fragment, mobileLibrary, coreLibrary, DateFormat, UploadCollectionParameter) => {
+    "sap/ui/model/json/JSONModel"
+], (Controller, Models, Formatter, Dialog, Button, MessageBox, MessageToast, Fragment, mobileLibrary, coreLibrary, DateFormat, UploadCollectionParameter,JSONModel) => {
     "use strict";
     //QR & PDF in use libraries //
     jQuery.sap.require("hodek.vendorportal.model.qrCode");
     jQuery.sap.require("hodek.vendorportal.model.jspdf");
     return Controller.extend("hodek.vendorportal.controller.AsnSaCreation", {
         onInit() {
+            this.baseObjectStoreUrl = "https://hodek-vibration-technologies-pvt-ltd-dev-hodek-eklefds556845713.cfapps.us10-001.hana.ondemand.com/odata/v4/object-store";
+            this.getView().setModel(new JSONModel([]), "files");
+            this.refreshFiles();
             const oRouter = this.getOwnerComponent().getRouter();
             this.oParameters = {
                 "$top": 200000
@@ -75,6 +79,7 @@ sap.ui.define([
             oRouter.getRoute("RouteAsnSaCreation").attachPatternMatched(this._onRouteMatched, this);
 
         },
+        formatter:Formatter,
         _onRouteMatched: function (oEvent) {
             this.getView().getModel("AsnSaItemsModel").setProperty("/Results", []);
             var sPoNumber = oEvent.getParameter("arguments").po;
@@ -1669,112 +1674,8 @@ sap.ui.define([
         },
 
 
-        _loadDocuments: async function () {
-            try {
-                const oModel = this.getOwnerComponent().getModel("catModel");
-                const aFiles = await oModel.read("/Files"); // adjust for V2 if needed
-
-                this.getView().getModel("documents").setProperty("/items", aFiles.results || aFiles.value || []);
-            } catch (err) {
-                MessageBox.error("Failed to load files: " + err.message);
-            }
-        },
-
-        /** 🔹 Before Upload - attach metadata */
-        onBeforeUploadStarts: function (oEvent) {
-            const oItem = oEvent.getParameter("item");
-            const fileName = oItem.getFileName();
-
-            // Add "slug" header to pass filename
-            oItem.addHeaderParameter(new UploadCollectionParameter({
-                name: "slug",
-                value: fileName
-            }));
-        },
-
-        /** 🔹 After upload */
-        onUploadCompleted: function (oEvent) {
-            MessageToast.show("Upload completed");
-            this._loadDocuments();
-        },
-
-        /** 🔹 Download selected files */
-        onDownloadFiles: async function () {
-            const oTable = this.byId("table-uploadSet");
-            const aSelected = oTable.getSelectedItems();
-
-            if (!aSelected.length) {
-                MessageToast.show("No file selected");
-                return;
-            }
-
-            const oModel = this.getOwnerComponent().getModel("catModel");
-
-            for (let oItem of aSelected) {
-                const fileId = oItem.getBindingContext("documents").getProperty("ID");
-
-                try {
-                    const url = await oModel.callFunction("/downloadFile", {
-                        method: "POST",
-                        urlParameters: { ID: fileId }
-                    });
-
-                    URLHelper.redirect(url, true);
-                } catch (err) {
-                    MessageBox.error("Download failed: " + err.message);
-                }
-            }
-        },
-
-        /** 🔹 Delete handler */
-        onRemoveHandler: async function (oEvent) {
-            const fileId = oEvent.getSource().getBindingContext("documents").getProperty("ID");
-
-            const oModel = this.getOwnerComponent().getModel("catModel");
-
-            try {
-                await oModel.callFunction("/deleteFile", {
-                    method: "POST",
-                    urlParameters: { ID: fileId }
-                });
-
-                MessageToast.show("File deleted");
-                this._loadDocuments();
-            } catch (err) {
-                MessageBox.error("Delete failed: " + err.message);
-            }
-        },
-
-        /** 🔹 Search in documents table */
-        onSearch: function (oEvent) {
-            const sQuery = oEvent.getParameter("newValue") || "";
-            const oTable = this.byId("table-uploadSet");
-            const oBinding = oTable.getBinding("items");
-
-            const aFilters = [];
-            if (sQuery) {
-                aFilters.push(new sap.ui.model.Filter("fileName", sap.ui.model.FilterOperator.Contains, sQuery));
-            }
-
-            oBinding.filter(aFilters);
-        },
-
-        /** 🔹 Selection change (enable/disable download button) */
-        onSelectionChange: function (oEvent) {
-            const oTable = this.byId("table-uploadSet");
-            const aSelected = oTable.getSelectedItems();
-            this.byId("downloadSelectedButton").setEnabled(aSelected.length > 0);
-        },
-
-        /** 🔹 File preview */
-        openPreview: function (oEvent) {
-            const sFileName = oEvent.getSource().getText();
-            MessageToast.show("Preview clicked for " + sFileName);
-            // Optional: Implement inline preview via iframe/pdf viewer
-        },
-
         /** 🔹 Formatter - file size */
-        getFileSizeWithUnits: function (iSize) {
+        formatSize: function (iSize) {
             if (!iSize) return "0 KB";
             let sUnit = "Bytes";
             let iCalc = iSize;
@@ -1791,15 +1692,13 @@ sap.ui.define([
         },
 
         /** 🔹 Formatter - icon based on MIME type */
-        getIconSrc: function (sMimeType, sFileName) {
-            if (!sMimeType && sFileName) {
+        getIconSrc: function (sFileName) {
+            if (sFileName) {
                 const sExt = sFileName.split(".").pop().toLowerCase();
                 if (sExt === "pdf") return "sap-icon://pdf-attachment";
                 if (["png", "jpg", "jpeg"].includes(sExt)) return "sap-icon://attachment-photo";
                 return "sap-icon://document";
             }
-            if (sMimeType && sMimeType.startsWith("image/")) return "sap-icon://attachment-photo";
-            if (sMimeType === "application/pdf") return "sap-icon://pdf-attachment";
             return "sap-icon://document";
         },
         checkQuantityInputErrors: function () {
@@ -1817,7 +1716,96 @@ sap.ui.define([
             });
 
             return bHasError;
-        }
+        },
+        // formatSize: function (bytes) {
+        //     return (bytes / 1024).toFixed(1);
+        // },
+
+        refreshFiles: async function () {
+            let url = this.baseObjectStoreUrl + "/listFiles";
+            const res = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            });
+            const data = await res.json();
+            this.getView().getModel("files").setData(data.value || []);
+        },
+
+        onUpload: function () {
+            const that = this;
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.onchange = async function (e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const arrayBuffer = await file.arrayBuffer();
+                const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+                const res = await fetch(that.baseObjectStoreUrl + "/uploadFile", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ objectName: file.name, content: base64 })
+                });
+
+                const result = await res.json();
+                MessageToast.show(result.value || "Uploaded");
+                that.refreshFiles();
+            };
+            fileInput.click();
+        },
+
+        onDownload: async function () {
+            const table = this.byId("fileTable");
+            const selected = table.getSelectedItem();
+            if (!selected) return;
+
+            const objectName = selected.getBindingContext("files").getObject().objectName;
+            const res = await fetch(this.baseObjectStoreUrl + "/downloadFile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ objectName })
+            });
+            const data = await res.json();
+
+            const byteCharacters = atob(data.content);
+            const byteNumbers = Array.from(byteCharacters).map(c => c.charCodeAt(0));
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray]);
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = data.objectName;
+            a.click();
+            URL.revokeObjectURL(url);
+        },
+
+        onDelete: async function () {
+            const table = this.byId("fileTable");
+            const selected = table.getSelectedItem();
+            if (!selected) return;
+
+            const objectName = selected.getBindingContext("files").getObject().objectName;
+            const res = await fetch(this.baseObjectStoreUrl + "/deleteFile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ objectName })
+            });
+            const result = await res.json();
+
+            MessageToast.show(result.value || "Deleted");
+            this.refreshFiles();
+        },
+        onFileSelect: function (oEvent) {
+            const oTable = oEvent.getSource();
+            const aSelectedContexts = oTable.getSelectedContexts("files"); // or your model name
+
+            const bHasSelection = aSelectedContexts.length > 0;
+
+            // Update RoutePoData>/attachbtn
+            this.getView().getModel("RoutePoData").setProperty("/attachbtn", bHasSelection);
+        },
 
 
     });

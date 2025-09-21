@@ -165,77 +165,38 @@
                         </VBox>
                     </IconTabFilter>
                     <IconTabFilter id="_IDGenIconTabFilter4" text="Attachments">
-                        <Table id="table-uploadSet" class="sapUiNoContentPadding" sticky="ColumnHeaders,HeaderToolbar" width="auto" mode="MultiSelect" fixedLayout="false" inset="true" autoPopinMode="true" hiddenInPopin="None" items="{path: 'documents>/items', templateShareable: false}" selectionChange="onSelectionChange">
+                        <VBox >
+                            <Toolbar>
+                                <Title text="Files" level="H2"/>
+                                <ToolbarSpacer/>
+                                <Button text="Upload" press="onUpload"/>
+                                <Button id="btnDownload" text="Download" enabled="{RoutePoData>/attachbtn}" press="onDownload"/>
+                                <Button id="btnDelete" text="Delete" enabled="{RoutePoData>/attachbtn}" press="onDelete"/>
+                            </Toolbar>
 
-                            <headerToolbar>
-                                <OverflowToolbar>
-                                    <Title text="Documents ({= ${documents>/items}.length})" level="H2" />
-                                    <ToolbarSpacer />
-
-                                    <SearchField width="20%" liveChange="onSearch">
-                                        <layoutData>
-                                            <OverflowToolbarLayoutData priority="NeverOverflow" />
-                                        </layoutData>
-                                    </SearchField>
-                                    <ToolbarSeparator />
-
-                                    <!-- Upload Button Placeholder (UI5 UploadSet integration) -->
-                                    <upload:ActionsPlaceholder id="uploadButton" placeholderFor="UploadButtonPlaceholder" />
-
-                                    <Button id="downloadSelectedButton" text="Download" enabled="false" press="onDownloadFiles" />
-                                </OverflowToolbar>
-                            </headerToolbar>
-
-                            <dependents>
-                                <plugins.UploadSetwithTable id="uploadSetTablePlugin" uploadUrl="/catalog/CatService/uploadFile" multiple="true" beforeUploadStarts="onBeforeUploadStarts" itemRenamed="onDocumentRenamedSuccess" uploadCompleted="onUploadCompleted" onActivated="onPluginActivated" cloudFilePickerEnabled="true" actions="uploadButton">
-
-                                    <rowConfiguration>
-                                        <upload.UploadItemConfiguration fileNamePath="fileName" mediaTypePath="mimeType" urlPath="url" previewablePath="previewable" fileSizePath="fileSize" isTrustedSourcePath="trustedSource" />
-                                    </rowConfiguration>
-                                </plugins.UploadSetwithTable>
-                            </dependents>
-
-                            <columns>
-                                <Column importance="High">
-                                    <header>
-                                        <Label text="File Name" />
-                                    </header>
-                                </Column>
-                                <Column>
-                                    <header>
-                                        <Label text="File Size" />
-                                    </header>
-                                </Column>
-                                <Column>
-                                    <header>
-                                        <Label text="Last Modified" />
-                                    </header>
-                                </Column>
-                                <Column importance="High" />
-                            </columns>
-
-                            <items>
-                                <ColumnListItem highlight="{= ${documents>uploadState} === 'Complete' ? 'Indication05' : null }">
-                                    <cells>
-                                        <HBox>
-                                            <Image src="{documents>imageUrl}" class="sapMUSTItemImage sapMUSTItemIcon" visible="{= ${documents>imageUrl} !== undefined}" />
-                                            <core:Icon src="{parts: ['documents>mimeType', 'documents>fileName'], formatter: '.getIconSrc'}" visible="{= ${documents>imageUrl} === undefined || ${documents>imageUrl} === '' }" class="sapMUSTItemImage sapMUSTItemIcon" />
-                                            <VBox class="sapUiTinyMargin sapUiSmallMarginBegin">
-                                                <Link text="{documents>fileName}" press="openPreview" class="sapUiTinyMarginBottom" />
-                                                <Text text="{documents>documentType}" />
-                                            </VBox>
-                                        </HBox>
-
-                                        <Text text="{parts: ['documents>fileSize'], formatter: '.getFileSizeWithUnits'}" />
-                                        <VBox>
-                                            <Text text="{documents>lastModifiedBy}" />
-                                            <Text class="sapUiTinyMarginTop" text="{documents>lastModified}" />
-                                        </VBox>
-                                        <Button class="sapUiTinyMarginBegin" type="Transparent" icon="sap-icon://delete" press="onRemoveHandler" />
-                                    </cells>
-                                </ColumnListItem>
-                            </items>
-                        </Table>
+                            <Table id="fileTable" mode="SingleSelectLeft" items="{files>/}" selectionChange="onFileSelect">
+                                <columns>
+                                    <Column>
+                                        <Text text="File Name"/>
+                                    </Column>
+                                    <Column>
+                                        <Text text="Size"/>
+                                    </Column>
+                                    <Column>
+                                        <Text text="Last Modified"/>
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <ObjectStatus text="{files>objectName}" icon="{path:'files>objectName',formatter:'.getIconSrc'}"/>
+                                            <Text text="{parts: ['files>size'], formatter: '.formatSize'}"/>
+                                            <Text text="{parts:['files>lastModified'],formatter:'.formatter.formatDateToDDMMYYYY'}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
 
                     </IconTabFilter>
                 </items>
