@@ -174,7 +174,7 @@
                                 <Button id="btnDelete" text="Delete" enabled="false" visible="false" press="onDelete"/>
                             </Toolbar>
 
-                            <Table id="fileTable" mode="SingleSelectLeft" items="{pendingFiles>/}" selectionChange="onFileSelect">
+                            <Table id="fileTable" mode="None" items="{pendingFiles>/}" selectionChange="onFileSelect">
                                 <columns>
                                     <Column>
                                         <Text text="File Name"/>
