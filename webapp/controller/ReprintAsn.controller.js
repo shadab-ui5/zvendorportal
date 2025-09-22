@@ -280,7 +280,7 @@ sap.ui.define([
             // doc.text(2, 17, `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`);
             let vendorText = `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`;
             let wrappedVendor = doc.splitTextToSize(vendorText, 40);
-            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
+            doc.text(wrappedVendor, 2, 17, { maxWidth: 40, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`ASN_${qrData.AsnNo}.pdf`);
         },

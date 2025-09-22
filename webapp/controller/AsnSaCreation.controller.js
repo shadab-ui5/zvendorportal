@@ -1595,34 +1595,55 @@ sap.ui.define([
             })
         },
 
+        // onViewQR: function (qrData) {
+        //     let that = this;
+        //     //let oQRCodeBox = new sap.m.VBox({});
+        //     let oQRCodeBox = this.getView().byId("idVBox_QRCode");
+        //     oQRCodeBox.setVisible(true);
+        //     const oHtmlComp = new sap.ui.core.HTML({
+        //         content: '<canvas id="qrCanvas" width="200" height="200" style="display:none;"></canvas>'
+        //     });
+        //     oQRCodeBox.addItem(oHtmlComp);
+
+        //     setTimeout(function () {
+        //         let sQRCodeNumber = qrData.AsnNo; // Data to encode in QR Code
+        //         // Generate QR Code using qrcode.js
+        //         QRCode.toCanvas(document.getElementById('qrCanvas'), sQRCodeNumber, function (error) {
+        //             if (error) {
+        //                 sap.m.MessageToast.show("QR Code generation failed!");
+        //                 return;
+        //             }
+        //             sap.m.MessageToast.show("QR Code generated!");
+        //             // After generating the QR Code, create PDF
+        //             that._generatePDF(qrData);
+        //             oQRCodeBox.setVisible(false);
+        //             that.clearUIFields();
+
+        //         }.bind(this));
+        //     }, 200);
+        // },
         onViewQR: function (qrData) {
             let that = this;
-            //let oQRCodeBox = new sap.m.VBox({});
-            let oQRCodeBox = this.getView().byId("idVBox_QRCode");
-            oQRCodeBox.setVisible(true);
-            const oHtmlComp = new sap.ui.core.HTML({
-                content: '<canvas id="qrCanvas" width="200" height="200" style="display:none;"></canvas>'
+            let sQRCodeNumber = qrData.AsnNo;
+
+            // create hidden canvas dynamically
+            let canvas = document.createElement("canvas");
+            canvas.id = "qrCanvas";
+            canvas.width = 200;
+            canvas.height = 200;
+            canvas.style.display = "none";
+            document.body.appendChild(canvas);
+
+            QRCode.toCanvas(canvas, sQRCodeNumber, function (error) {
+                if (error) {
+                    sap.m.MessageToast.show("QR Code generation failed!");
+                    return;
+                }
+                sap.m.MessageToast.show("QR Code generated!");
+                that._generatePDF(qrData);
+                that.clearUIFields();
             });
-            oQRCodeBox.addItem(oHtmlComp);
-
-            setTimeout(function () {
-                let sQRCodeNumber = qrData.AsnNo; // Data to encode in QR Code
-                // Generate QR Code using qrcode.js
-                QRCode.toCanvas(document.getElementById('qrCanvas'), sQRCodeNumber, function (error) {
-                    if (error) {
-                        sap.m.MessageToast.show("QR Code generation failed!");
-                        return;
-                    }
-                    sap.m.MessageToast.show("QR Code generated!");
-                    // After generating the QR Code, create PDF
-                    that._generatePDF(qrData);
-                    oQRCodeBox.setVisible(false);
-                    that.clearUIFields();
-
-                }.bind(this));
-            }, 200);
         },
-
         _generatePDF: function (qrData) {
             var jsPDF = window.jspdf.jsPDF;
             //var doc = new jsPDF();
@@ -1654,7 +1675,7 @@ sap.ui.define([
             // doc.text(2, 17, `Supplier: ${supplierName} ( ${qrData.Vendor} )`);
             let vendorText = `Supplier: ${supplierName} ( ${qrData.Vendor} )`;
             let wrappedVendor = doc.splitTextToSize(vendorText, 40);
-            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
+            doc.text(wrappedVendor, 2, 17, { maxWidth: 40, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`ASN_${qrData.AsnNo}.pdf`);
         },
