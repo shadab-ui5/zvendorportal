@@ -8,7 +8,7 @@
     xmlns:upload="sap.m.upload"
     xmlns:svm="sap.ui.comp.smartvariants">
     <!-- <Page id="asnCreationpage" title="{i18n>title}" showFooter="true" titleAlignment="Auto" showNavButton="true" navButtonPress="onNavBack"> -->
-    <f:DynamicPage id="_IDGenDynamicPage3" stickySubheaderProvider="iconTabBar" headerExpanded="{/headerExpanded}" showFooter="true" fitContent="true">
+    <f:DynamicPage id="_IDGenDynamicPage3" class="sapUiNoContentPadding" stickySubheaderProvider="iconTabBar" headerExpanded="{/headerExpanded}" showFooter="true" fitContent="true">
         <f:title>
             <f:DynamicPageTitle id="_IDGenDynamicPageTitle2">
                 <f:actions>

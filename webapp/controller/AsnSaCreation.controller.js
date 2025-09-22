@@ -1460,7 +1460,7 @@ sap.ui.define([
                         Amount = oView.byId("idRAPO_Amount").getValue(),
                         Vehicleno = oView.byId("idRAPO_VehicalNo").getValue(),
                         purchaseOrder = oView.byId("idRAPO_PO_Order").getValue(),
-                        supplierName = oView.byId("idSupplierName").getValue(),
+                        supplierName = oView.byId("idSupplierName").getText(),
                         Transporter = oView.byId("idRAPO_Trasporter").getValue();
                     if (InvoiceNo === "" || (!InvoiceDate) || Ponumber === "" || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
                         MessageToast.show("Fill all mandatory fields");
