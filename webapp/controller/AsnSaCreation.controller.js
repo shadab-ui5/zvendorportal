@@ -12,7 +12,7 @@ sap.ui.define([
     "sap/ui/core/format/DateFormat",
     "sap/m/UploadCollectionParameter",
     "sap/ui/model/json/JSONModel"
-], (Controller, Models, Formatter, Dialog, Button, MessageBox, MessageToast, Fragment, mobileLibrary, coreLibrary, DateFormat, UploadCollectionParameter,JSONModel) => {
+], (Controller, Models, Formatter, Dialog, Button, MessageBox, MessageToast, Fragment, mobileLibrary, coreLibrary, DateFormat, UploadCollectionParameter, JSONModel) => {
     "use strict";
     //QR & PDF in use libraries //
     jQuery.sap.require("hodek.vendorportal.model.qrCode");
@@ -21,7 +21,9 @@ sap.ui.define([
         onInit() {
             this.baseObjectStoreUrl = "https://hodek-vibration-technologies-pvt-ltd-dev-hodek-eklefds556845713.cfapps.us10-001.hana.ondemand.com/odata/v4/object-store";
             this.getView().setModel(new JSONModel([]), "files");
-            this.refreshFiles();
+            // model for files newly selected but not yet uploaded
+            this.getView().setModel(new JSONModel([]), "pendingFiles");
+            // this.refreshFiles();
             const oRouter = this.getOwnerComponent().getRouter();
             this.oParameters = {
                 "$top": 200000
@@ -79,9 +81,10 @@ sap.ui.define([
             oRouter.getRoute("RouteAsnSaCreation").attachPatternMatched(this._onRouteMatched, this);
 
         },
-        formatter:Formatter,
+        formatter: Formatter,
         _onRouteMatched: function (oEvent) {
             this.getView().getModel("AsnSaItemsModel").setProperty("/Results", []);
+            this.getView().getModel("pendingFiles").setData([]);
             var sPoNumber = oEvent.getParameter("arguments").po;
             this.purchaseOrder = sPoNumber;
             console.log("Routed PO ID:", sPoNumber);
@@ -1431,7 +1434,13 @@ sap.ui.define([
                 sap.m.MessageToast.show("Please correct quantity errors before saving.");
                 return;
             }
+            const pending = this.getView().getModel("pendingFiles").getData();
 
+            // Validation: must have at least 1 file
+            if (pending.length === 0) {
+                MessageToast.show("Please attach at least one file before saving.");
+                return;
+            }
             MessageBox.confirm("Are you sure you want to save this ASN?", {
                 title: "Confirm Save",
                 actions: [MessageBox.Action.YES, MessageBox.Action.NO],
@@ -1524,6 +1533,7 @@ sap.ui.define([
                             var qrDataToPrintQRCode = oResponse.data;
                             let qrData = oResponse.data;
                             let gateEntryNo = qrData.AsnNo;
+                            that.onSaveFiles(qrData.AsnNo);
                             console.log(oResponse);
                             let oTable = that.getView().byId("idTable_RAPO");
                             let aItems = oTable.getModel("AsnSaItemsModel").getProperty("/Results") || [];
@@ -1731,30 +1741,59 @@ sap.ui.define([
             this.getView().getModel("files").setData(data.value || []);
         },
 
+        // onUpload: function () {
+        //     const that = this;
+        //     const fileInput = document.createElement("input");
+        //     fileInput.type = "file";
+        //     fileInput.onchange = async function (e) {
+        //         const file = e.target.files[0];
+        //         if (!file) return;
+
+        //         const arrayBuffer = await file.arrayBuffer();
+        //         const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+        //         const res = await fetch(that.baseObjectStoreUrl + "/uploadFile", {
+        //             method: "POST",
+        //             headers: { "Content-Type": "application/json" },
+        //             body: JSON.stringify({ objectName: file.name, content: base64 })
+        //         });
+
+        //         const result = await res.json();
+        //         MessageToast.show(result.value || "Uploaded");
+        //         that.refreshFiles();
+        //     };
+        //     fileInput.click();
+        // },
+
         onUpload: function () {
             const that = this;
             const fileInput = document.createElement("input");
             fileInput.type = "file";
+            fileInput.multiple = true; // allow multiple
             fileInput.onchange = async function (e) {
-                const file = e.target.files[0];
-                if (!file) return;
+                const files = Array.from(e.target.files);
+                if (!files.length) return;
 
-                const arrayBuffer = await file.arrayBuffer();
-                const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+                const aPending = that.getView().getModel("pendingFiles").getData();
+                // Validation: max 5 files total
+                if (aPending.length + files.length > 5) {
+                    MessageToast.show("You can only attach up to 5 files.");
+                    return;
+                }
 
-                const res = await fetch(that.baseObjectStoreUrl + "/uploadFile", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ objectName: file.name, content: base64 })
+                files.forEach(file => {
+                    aPending.push({
+                        objectName: file.name,
+                        size: file.size,
+                        lastModified: file.lastModified,
+                        file: file // keep raw file for later upload
+                    });
                 });
 
-                const result = await res.json();
-                MessageToast.show(result.value || "Uploaded");
-                that.refreshFiles();
+                that.getView().getModel("pendingFiles").setData(aPending);
             };
             fileInput.click();
         },
-
         onDownload: async function () {
             const table = this.byId("fileTable");
             const selected = table.getSelectedItem();
@@ -1806,6 +1845,41 @@ sap.ui.define([
             // Update RoutePoData>/attachbtn
             this.getView().getModel("RoutePoData").setProperty("/attachbtn", bHasSelection);
         },
+        onSaveFiles: async function (asn) {
+            const that = this;
+            const pending = this.getView().getModel("pendingFiles").getData();
+
+            for (let fileEntry of pending) {
+                const file = fileEntry.file;
+                const arrayBuffer = await file.arrayBuffer();
+                const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+                let fileName = `${asn}/${file.name}`;
+                await fetch(this.baseObjectStoreUrl + "/uploadFile", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ objectName: fileName, content: base64 })
+                });
+            }
+
+            MessageToast.show("Files uploaded");
+
+            // clear pending files
+            this.getView().getModel("pendingFiles").setData([]);
+
+            // refresh backend files
+            // this.refreshFiles();
+        },
+        onRemovePendingFile: function (oEvent) {
+            const oItem = oEvent.getSource().getParent(); // ColumnListItem
+            const oCtx = oItem.getBindingContext("pendingFiles");
+            const oData = this.getView().getModel("pendingFiles").getData();
+
+            const index = oData.indexOf(oCtx.getObject());
+            if (index > -1) {
+                oData.splice(index, 1);
+            }
+            this.getView().getModel("pendingFiles").setData(oData);
+        }
 
 
     });

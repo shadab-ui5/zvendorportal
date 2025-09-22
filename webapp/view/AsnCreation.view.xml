@@ -170,11 +170,11 @@
                                 <Title text="Files" level="H2"/>
                                 <ToolbarSpacer/>
                                 <Button text="Upload" press="onUpload"/>
-                                <Button id="btnDownload" text="Download" enabled="{RoutePoData>/attachbtn}" press="onDownload"/>
-                                <Button id="btnDelete" text="Delete" enabled="{RoutePoData>/attachbtn}" press="onDelete"/>
+                                <Button id="btnDownload" text="Download" enabled="false" visible="false" press="onDownload"/>
+                                <Button id="btnDelete" text="Delete" enabled="false" visible="false" press="onDelete"/>
                             </Toolbar>
 
-                            <Table id="fileTable" mode="SingleSelectLeft" items="{files>/}" selectionChange="onFileSelect">
+                            <Table id="fileTable" mode="SingleSelectLeft" items="{pendingFiles>/}" selectionChange="onFileSelect">
                                 <columns>
                                     <Column>
                                         <Text text="File Name"/>
@@ -185,19 +185,20 @@
                                     <Column>
                                         <Text text="Last Modified"/>
                                     </Column>
+                                    <Column hAlign="Center" width="5rem"><Text text=""/></Column>
                                 </columns>
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <ObjectStatus text="{files>objectName}" icon="{path:'files>objectName',formatter:'.getIconSrc'}"/>
-                                            <Text text="{parts: ['files>size'], formatter: '.formatSize'}"/>
-                                            <Text text="{parts:['files>lastModified'],formatter:'.formatter.formatDateToDDMMYYYY'}"/>
+                                            <ObjectStatus text="{pendingFiles>objectName}" icon="{path:'pendingFiles>objectName',formatter:'.getIconSrc'}"/>
+                                            <Text text="{parts: ['pendingFiles>size'], formatter: '.formatSize'}"/>
+                                            <Text text="{parts:['pendingFiles>lastModified'],formatter:'.formatter.formatDateToDDMMYYYY'}"/>
+                                            <Button icon="sap-icon://decline" type="Transparent" press=".onRemovePendingFile"/>
                                         </cells>
                                     </ColumnListItem>
                                 </items>
                             </Table>
                         </VBox>
-
                     </IconTabFilter>
                 </items>
             </IconTabBar>
