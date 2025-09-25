@@ -66,7 +66,7 @@
             </fb:filterGroupItems>
 
         </fb:FilterBar>
-        <Table id="idSaTable" alternateRowColors="true" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelSa>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+        <Table id="idSaTable"  growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelSa>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
             <headerToolbar>
                 <OverflowToolbar id="_IDGenOverflowToolbar4" >
                     <Title id="_IDGenTitle"  text="Scheduling Agreement" level="H2"/>

@@ -169,7 +169,7 @@
                             <Toolbar>
                                 <Title text="Files" level="H2"/>
                                 <ToolbarSpacer/>
-                                <Button text="Upload" press="onUpload"/>
+                                <Button class="sapUiLargeMarginEnd" type="Success" icon="sap-icon://upload-to-cloud" text="Upload" press="onUpload"/>
                                 <Button id="btnDownload" text="Download" enabled="false" visible="false" press="onDownload"/>
                                 <Button id="btnDelete" text="Delete" enabled="false" visible="false" press="onDelete"/>
                             </Toolbar>

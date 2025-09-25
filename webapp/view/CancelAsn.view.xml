@@ -52,6 +52,9 @@
                 <Column id="purOrder" headerMenu="columnHeaderMenu">
                     <Text id="_IDGenText" text="ASN No." />
                 </Column>
+                <Column id="pOrder" headerMenu="columnHeaderMenu">
+                    <Text id="_IDGenText1222" text="PO / SA" />
+                </Column>
                 <Column id="_IDGenColumn" minScreenWidth="Tablet" demandPopin="true">
                     <Text id="_IDGenText2" text="Invoice" />
                 </Column>
@@ -77,6 +80,7 @@
                 <ColumnListItem id="_IDGenColumnListItem12" vAlign="Middle">
                     <cells>
                         <Text id="_IDGenText51" text="{AsnHeaderModel>AsnNo}" />
+                        <Text id="_IDGenText551" text="{AsnHeaderModel>Ponumber}" />
 
                         <Text id="_IDGenText81" text="{AsnHeaderModel>InvoiceNo}" />
                         <Text id="_IDGenText922" text="{path:'AsnHeaderModel>InvoiceDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />

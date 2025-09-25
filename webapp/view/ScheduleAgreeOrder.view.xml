@@ -55,7 +55,7 @@
                 </f:DynamicPageHeader>
             </f:header>
             <f:content>
-                <Table id="idSaItemTable" alternateRowColors="true" mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartSaHeaderTable" items="{SaItemModel>/SaItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+                <Table id="idSaItemTable"  mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartSaHeaderTable" items="{SaItemModel>/SaItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
                     <headerToolbar>
                         <OverflowToolbar id="_IDGenOverflowToolbar3">
                             <Title id="_IDGenTitle5" text="Items" level="H2"/>
@@ -84,6 +84,9 @@
                         <Column id="_IDGenColumn24">
                             <Text id="_IDGenText59" text="Material" />
                         </Column>
+                         <Column id="_IDGenColumn1123">
+                            <Text id="_IDGenText28q3" text="Delivery Date" />
+                        </Column>
                         <Column id="_IDGenColumn26">
                             <Text id="_IDGenText61" text="Scheduled Qty" />
                         </Column>
@@ -102,7 +105,7 @@
                                 <Text id="_IDGenText64" text="{SaItemModel>SchedulingAgreementItem}" />
                                 <Text id="_IDGenText65" text="{SaItemModel>PlantName}({SaItemModel>Plant})" />
                                 <Text id="_IDGenText66" text="{SaItemModel>ItemDescription}({SaItemModel>ItemCode})" />
-                                <!-- <Text id="_IDGenText67" text="{path: 'SaItemModel>DeliveryDate', formatter: '.formatter.formatDateToDDMMYYYY'}" /> -->
+                                <Text id="_IDGenText6777" text="{path: 'SaItemModel>DeliveryDate', formatter: '.formatter.formatDateToDDMMYYYY'}" />
                                 <Text id="_IDGenText68" text="{SaItemModel>ScheduleQty} {SaItemModel>UOM}" />
                                 <Text id="_IDGenText69" text="{SaItemModel>DeliveredQty} {SaItemModel>UOM}" />
                                 <Text id="_IDGenText71" text="{SaItemModel>UOM}" />

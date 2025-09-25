@@ -14,11 +14,48 @@ sap.ui.define([
             const oODataModel = this.getOwnerComponent().getModel("RouteSaData");
             this.getView().setModel(oODataModel, "RouteSaData");
             const oSaHeader = this.getOwnerComponent().getModel("RouteSaData")?.getProperty("/SaHeader");
-
+            var oTable = this.byId("idSaItemTable");
+            if (oTable) {
+                // use .attachEvent to preserve 'this' with bind
+                oTable.attachEvent("updateFinished", this._markDeliveredRows.bind(this));
+            }
             if (!oSaHeader || Object.keys(oSaHeader).length === 0) {
                 this.getOwnerComponent().getRouter().navTo("RouteSchedulingAgg");
             }
         },
+        _markDeliveredRows: function () {
+            var oTable = this.byId("idSaItemTable");
+            if (!oTable) return;
+
+            oTable.getItems().forEach(function (oItem) {
+                var oCtx = oItem.getBindingContext("SaItemModel");
+                if (!oCtx) return;
+
+                var oData = oCtx.getObject();
+                var scheduled = parseFloat(oData.ScheduleQty) || 0;
+                var delivered = parseFloat(oData.DeliveredQty) || 0;
+
+                var $checkbox = oItem.$().find(".sapMCb"); // MultiSelect checkbox
+                if (scheduled === delivered) {
+                    // gray out row
+                    oItem.addStyleClass("rowDisabled");
+
+                    // disable checkbox via CSS pointer-events
+                    $checkbox.css("pointer-events", "none");
+                    $checkbox.css("opacity", "0.4");
+
+                    // deselect if already selected
+                    if (oItem.getSelected && oItem.getSelected()) {
+                        oItem.setSelected(false);
+                    }
+                } else {
+                    oItem.removeStyleClass("rowDisabled");
+                    $checkbox.css("pointer-events", "");
+                    $checkbox.css("opacity", "");
+                }
+            });
+        },
+
         formatter: Formatter,
         _onRouteMatched: function (oEvent) {
             const oTable = this.byId("idSaItemTable");

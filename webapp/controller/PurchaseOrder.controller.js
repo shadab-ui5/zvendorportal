@@ -14,10 +14,46 @@ sap.ui.define([
             const oODataModel = this.getOwnerComponent().getModel("RoutePoData");
             this.getView().setModel(oODataModel, "RoutePoData");
             const oPoHeader = this.getOwnerComponent().getModel("RoutePoData")?.getProperty("/PoHeader");
-
+            var oTable = this.byId("idPoItemTable");
+            if (oTable) {
+                // use .attachEvent to preserve 'this' with bind
+                oTable.attachEvent("updateFinished", this._markDeliveredRows.bind(this));
+            }
             if (!oPoHeader || Object.keys(oPoHeader).length === 0) {
                 this.getOwnerComponent().getRouter().navTo("RouteVendorPortal");
             }
+        },
+        _markDeliveredRows: function () {
+            var oTable = this.byId("idPoItemTable");
+            if (!oTable) return;
+
+            oTable.getItems().forEach(function (oItem) {
+                var oCtx = oItem.getBindingContext("PoItemModel");
+                if (!oCtx) return;
+
+                var oData = oCtx.getObject();
+                var scheduled = parseFloat(oData.ScheduleQty) || 0;
+                var delivered = parseFloat(oData.DeliveredQty) || 0;
+
+                var $checkbox = oItem.$().find(".sapMCb"); // MultiSelect checkbox
+                if (scheduled === delivered) {
+                    // gray out row
+                    oItem.addStyleClass("rowDisabled");
+
+                    // disable checkbox via CSS pointer-events
+                    $checkbox.css("pointer-events", "none");
+                    $checkbox.css("opacity", "0.4");
+
+                    // deselect if already selected
+                    if (oItem.getSelected && oItem.getSelected()) {
+                        oItem.setSelected(false);
+                    }
+                } else {
+                    oItem.removeStyleClass("rowDisabled");
+                    $checkbox.css("pointer-events", "");
+                    $checkbox.css("opacity", "");
+                }
+            });
         },
         formatter: Formatter,
         _onRouteMatched: function (oEvent) {

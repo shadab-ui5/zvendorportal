@@ -67,7 +67,7 @@
                 </fb:filterGroupItems>
 
             </fb:FilterBar>
-            <Table id="idProductsTable" alternateRowColors="true" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelPO>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+            <Table id="idProductsTable"  growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{TableModelPO>/POHeaders}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
                 <headerToolbar>
                     <OverflowToolbar id="_IDGenOverflowToolbar1">
                         <Title id="_IDGenTitle3" text="Purchase Order" level="H2"/>
