@@ -55,7 +55,7 @@
                 </f:DynamicPageHeader>
             </f:header>
             <f:content>
-                <Table id="idSaItemTable"  mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartSaHeaderTable" items="{SaItemModel>/SaItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+                <Table id="idSaItemTable"  mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartSaHeaderTable" items="{SaItemModel>/SaItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar" selectionChange="onSelectionChange">
                     <headerToolbar>
                         <OverflowToolbar id="_IDGenOverflowToolbar3">
                             <Title id="_IDGenTitle5" text="Items" level="H2"/>

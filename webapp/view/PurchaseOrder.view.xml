@@ -60,7 +60,7 @@
                 </f:DynamicPageHeader>
             </f:header>
             <f:content>
-                <Table id="idPoItemTable"  mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{PoItemModel>/POItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar">
+                <Table id="idPoItemTable"  mode="MultiSelect" multiSelectMode="SelectAll" growing="true" growingScrollToLoad="true"  growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{PoItemModel>/POItems}" itemPress="onLineItemPress" sticky="ColumnHeaders,HeaderToolbar" selectionChange="onSelectionChange">
                     <headerToolbar>
                         <OverflowToolbar id="_IDGenOverflowToolbar">
                             <Title id="_IDGenTitle6" text="Items" level="H2"/>

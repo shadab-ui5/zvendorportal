@@ -55,6 +55,48 @@ sap.ui.define([
                 }
             });
         },
+        onSelectionChange: function (oEvent) {
+            // guard to avoid handling programmatic changes
+            if (this._suppressSelectionHandler) {
+                return;
+            }
+
+            var oTable = this.byId("idPoItemTable");
+            var aChangedItems = oEvent.getParameter("listItems") || [];
+            var bSelected = oEvent.getParameter("selected");
+
+            var that = this;
+
+            // if listItems is empty (rare), fall back to all items (covers some edge cases)
+            if (!aChangedItems.length) {
+                aChangedItems = oTable.getItems();
+            }
+
+            aChangedItems.forEach(function (oItem) {
+                var oCtx = oItem.getBindingContext("PoItemModel");
+                if (!oCtx) return;
+
+                var oData = oCtx.getObject();
+                var scheduled = parseFloat(oData.ScheduleQty) || 0;
+                var delivered = parseFloat(oData.DeliveredQty) || 0;
+
+                if (scheduled === delivered && bSelected) {
+                    // Prevent recursion while we change selection programmatically
+                    that._suppressSelectionHandler = true;
+
+                    // Preferred: use ListBase API available on sap.m.Table
+                    if (typeof oTable.setSelectedItem === "function") {
+                        oTable.setSelectedItem(oItem, false);
+                    }
+                    // Fallback: set the item selected property directly
+                    else if (typeof oItem.setSelected === "function") {
+                        oItem.setSelected(false);
+                    }
+
+                    that._suppressSelectionHandler = false;
+                }
+            });
+        },
         formatter: Formatter,
         _onRouteMatched: function (oEvent) {
             const oTable = this.byId("idPoItemTable");

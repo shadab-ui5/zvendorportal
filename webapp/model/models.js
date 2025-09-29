@@ -54,7 +54,16 @@ sap.ui.define([
                                 oData.results.sort(function (a, b) {
                                     var itemA = parseInt(a.PurchaseOrderItem, 10);
                                     var itemB = parseInt(b.PurchaseOrderItem, 10);
-                                    return itemA - itemB; // Ascending order
+
+                                    if (itemA !== itemB) {
+                                        return itemA - itemB; // primary sort by PO item no
+                                    }
+
+                                    // secondary sort by DeliveryDate
+                                    var dateA = new Date(a.DeliveryDate);
+                                    var dateB = new Date(b.DeliveryDate);
+
+                                    return dateA - dateB; // ascending
                                 });
                             }
                             oModel.setProperty("/POItems", oData.results);
@@ -87,7 +96,16 @@ sap.ui.define([
                                 oData.results.sort(function (a, b) {
                                     var itemA = parseInt(a.SchedulingAgreementItem, 10);
                                     var itemB = parseInt(b.SchedulingAgreementItem, 10);
-                                    return itemA - itemB; // Ascending order
+
+                                    if (itemA !== itemB) {
+                                        return itemA - itemB; // primary sort: item no
+                                    }
+
+                                    // secondary sort: DeliveryDate
+                                    var dateA = new Date(a.DeliveryDate);
+                                    var dateB = new Date(b.DeliveryDate);
+
+                                    return dateA - dateB; // ascending
                                 });
                             }
                             oModel.setProperty("/SaItems", oData.results);
