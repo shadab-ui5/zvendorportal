@@ -17,6 +17,7 @@ sap.ui.define([
     //QR & PDF in use libraries //
     jQuery.sap.require("hodek.vendorportal.model.qrCode");
     jQuery.sap.require("hodek.vendorportal.model.jspdf");
+    jQuery.sap.require("hodek.vendorportal.model.JsBarcode");
     return Controller.extend("hodek.vendorportal.controller.AsnSaCreation", {
         onInit() {
             this.baseObjectStoreUrl = "https://hodek-vibration-technologies-pvt-ltd-dev-hodek-eklefds556845713.cfapps.us10-001.hana.ondemand.com/odata/v4/object-store";
@@ -1634,15 +1635,40 @@ sap.ui.define([
             canvas.style.display = "none";
             document.body.appendChild(canvas);
 
-            QRCode.toCanvas(canvas, sQRCodeNumber, function (error) {
-                if (error) {
-                    sap.m.MessageToast.show("QR Code generation failed!");
-                    return;
+            // QRCode.toCanvas(canvas, sQRCodeNumber, function (error) {
+            //     if (error) {
+            //         sap.m.MessageToast.show("QR Code generation failed!");
+            //         return;
+            //     }
+            //     sap.m.MessageToast.show("QR Code generated!");
+            //     that._generatePDF(qrData);
+            //     that.clearUIFields();
+            // });
+            setTimeout(function () {
+                try {
+                    let sBarcodeData = qrData.AsnNo; // The value to encode in the barcode
+                    // Generate barcode using JsBarcode
+                    JsBarcode(canvas, sBarcodeData, {
+                        format: "CODE128",   // Common & widely supported format
+                        displayValue: false,  // Show the text below the barcode
+                        fontSize: 14,
+                        lineColor: "#000",
+                        width: 2,
+                        height: 10,
+                        margin: 10
+                    });
+
+                    sap.m.MessageToast.show("Barcode generated!");
+
+                    // After generating the barcode, create PDF
+                    that._generatePDF(qrData);
+                    that.clearUIFields();
+
+                } catch (error) {
+                    console.error(error);
+                    sap.m.MessageToast.show("Barcode generation failed!");
                 }
-                sap.m.MessageToast.show("QR Code generated!");
-                that._generatePDF(qrData);
-                that.clearUIFields();
-            });
+            }, 200);
         },
         _generatePDF: function (qrData) {
             var jsPDF = window.jspdf.jsPDF;
@@ -1661,21 +1687,21 @@ sap.ui.define([
             doc.setFont("Helvetica", 'bold');
             doc.setFontSize(4.5);
             doc.setTextColor('#000');
-
-            doc.text(2, 5, `ASN Number.: ${qrData.AsnNo}`);
-            doc.text(2, 9, `Invoice Number.: ${qrData.InvoiceNo}`);
-            doc.text(2, 13, `Invoice Date: ${formattedInvDate}`);
-
             // Get the canvas element for the QR code
             var canvas = document.getElementById('qrCanvas');
             var imgData = canvas.toDataURL('image/png');
 
             // Add the QR code image to the PDF
-            doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
+            doc.addImage(imgData, 'PNG', 15, 1, 20, 12); // Adjust size and position as necessary
+            doc.text(2, 14, `ASN Number: ${qrData.AsnNo}`);
+            doc.text(2, 16, `Invoice Number: ${qrData.InvoiceNo}`);
+            doc.text(2, 18, `Invoice Date: ${formattedInvDate}`);
+
+
             // doc.text(2, 17, `Supplier: ${supplierName} ( ${qrData.Vendor} )`);
             let vendorText = `Supplier: ${supplierName} ( ${qrData.Vendor} )`;
             let wrappedVendor = doc.splitTextToSize(vendorText, 43);
-            doc.text(wrappedVendor, 2, 17, { maxWidth: 43, lineHeightFactor: 1.2 });
+            doc.text(wrappedVendor, 2, 20, { maxWidth: 43, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`ASN_${qrData.AsnNo}.pdf`);
         },
