@@ -261,7 +261,7 @@ sap.ui.define([
                         fontSize: 14,
                         lineColor: "#000",
                         width: 2,
-                        height: 10,
+                        height: 50,
                         margin: 10
                     });
 
@@ -269,8 +269,6 @@ sap.ui.define([
 
                     // After generating the barcode, create PDF
                     that._generatePDF(qrData);
-
-
                 } catch (error) {
                     console.error(error);
                     sap.m.MessageToast.show("Barcode generation failed!");
@@ -299,14 +297,14 @@ sap.ui.define([
             var imgData = canvas.toDataURL('image/png');
 
             // Add the QR code image to the PDF
-            doc.addImage(imgData, 'PNG',15, 1, 20, 12); // Adjust size and position as necessary
-            doc.text(2, 12, `ASN Number.: ${qrData.AsnNo}`);
-            doc.text(2, 14, `Invoice Number.: ${qrData.InvoiceNo}`);
-            doc.text(2, 16, `Invoice Date: ${formattedInvDate}`);
+            doc.addImage(imgData, 'PNG',15, 1, 20, 10); // Adjust size and position as necessary
+            doc.text(2, 12, `ASN Number: ${qrData.AsnNo}`);
+            doc.text(2, 15, `Invoice Number: ${qrData.InvoiceNo}`);
+            doc.text(2, 18, `Invoice Date: ${formattedInvDate}`);
             // doc.text(2, 17, `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`);
             let vendorText = `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`;
             let wrappedVendor = doc.splitTextToSize(vendorText, 43);
-            doc.text(wrappedVendor, 2, 18, { maxWidth: 43, lineHeightFactor: 1.2 });
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 43, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`ASN_${qrData.AsnNo}.pdf`);
         },
