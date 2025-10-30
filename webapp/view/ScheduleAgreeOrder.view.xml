@@ -60,10 +60,9 @@
                         <OverflowToolbar id="_IDGenOverflowToolbar3">
                             <Title id="_IDGenTitle5" text="Items" level="H2"/>
                             <ToolbarSpacer id="_IDGenToolbarSpacer4" />
-                            <!-- <Button id="_IDGenButton14" tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
-                            <Button id="_IDGenButton15" tooltip="Filter" icon="sap-icon://filter" press="handleFilterButtonPressed"/>
-                            <Button id="_IDGenButton16" tooltip="Group" icon="sap-icon://group-2" press="handleGroupButtonPressed"/> -->
-                            <ToggleButton id="_IDGenToggleButton3" icon="sap-icon://menu" tooltip="Enable Custom Context Menu" press="onToggleContextMenu" />
+                            <!-- 🔍 Material Filter -->
+                        <SearchField id="idMaterialSearch" width="20rem" placeholder="Search by Material" liveChange="onMaterialSearch" search="onMaterialSearch"/>
+                            <!-- <ToggleButton id="_IDGenToggleButton3" icon="sap-icon://menu" tooltip="Enable Custom Context Menu" press="onToggleContextMenu" /> -->
                         </OverflowToolbar>
                     </headerToolbar>
                     <infoToolbar>

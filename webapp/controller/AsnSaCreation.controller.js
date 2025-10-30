@@ -1523,6 +1523,7 @@ sap.ui.define([
                         "Transporter": Transporter,
                         "Status": "01",
                         "Vendorname": supplierName,
+                        "Sourceappvp":"X",
                         "to_Item": itemData
                     };
 

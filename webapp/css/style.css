@@ -68,3 +68,8 @@
 .rowDisabled .sapMText {
     color: #000000 !important;
 }
+
+.smallTitle {
+    font-size: 1rem !important;
+    font-weight: 600;
+}

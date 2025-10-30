@@ -167,7 +167,7 @@
                     <IconTabFilter id="_IDGenIconTabFilter4" text="Attachments">
                         <VBox >
                             <Toolbar>
-                                <Title text="Files" level="H2"/>
+                                <Text text="Attach your PDIR &amp; MTC Report" class="smallTitle sapUiMediumMarginBegin"/>
                                 <ToolbarSpacer/>
                                 <Button class="sapUiLargeMarginEnd" type="Success" icon="sap-icon://upload-to-cloud" text="Upload" press="onUpload"/>
                                 <Button id="btnDownload" text="Download" enabled="false" visible="false" press="onDownload"/>

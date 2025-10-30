@@ -140,6 +140,30 @@ sap.ui.define([
             });
             // Optional: Console log for debugging
             console.log("Selected PO Items:", aSelectedData);
+        },
+        onMaterialSearch: function (oEvent) {
+            var sQuery = oEvent.getParameter("newValue") || oEvent.getParameter("query");
+            var oTable = this.byId("idPoItemTable");
+            var oBinding = oTable.getBinding("items");
+
+            if (sQuery) {
+                // Filter based on Material or Item Description
+                var aFilters = [
+                    new sap.ui.model.Filter("ItemDescription", sap.ui.model.FilterOperator.Contains, sQuery),
+                    new sap.ui.model.Filter("Material", sap.ui.model.FilterOperator.Contains, sQuery)
+                ];
+
+                var oCombinedFilter = new sap.ui.model.Filter({
+                    filters: aFilters,
+                    and: false
+                });
+
+                oBinding.filter(oCombinedFilter);
+            } else {
+                // Clear filter
+                oBinding.filter([]);
+            }
         }
+
     });
 });
