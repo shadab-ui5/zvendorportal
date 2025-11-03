@@ -1315,6 +1315,12 @@ sap.ui.define([
                         MessageToast.show("Enter Item Quantity");
                         return;
                     }
+                    const hasZeroPostedQty = itemData.some(obj => parseFloat(obj.Postedquantity) === 0);
+
+                    if (hasZeroPostedQty) {
+                        MessageToast.show("Quantity cannot be zero");
+                        return;
+                    }
                     let payload = {
                         "AsnNo": "",
                         "GateEntryId": "",
@@ -1335,7 +1341,7 @@ sap.ui.define([
                         "Transporter": Transporter,
                         "Status": "01",
                         "Vendorname": supplierName,
-                        "Sourceappvp":"X",
+                        "Sourceappvp": "X",
                         "to_Item": itemData
                     };
 
@@ -1474,7 +1480,7 @@ sap.ui.define([
 
                     // After generating the barcode, create PDF
                     that._generatePDF(qrData);
-                     that.clearUIFields();
+                    that.clearUIFields();
                     // oQRCodeBox.setVisible(false);
 
                 } catch (error) {
@@ -1506,7 +1512,7 @@ sap.ui.define([
             var imgData = canvas.toDataURL('image/png');
 
             // Add the QR code image to the PDF
-            doc.addImage(imgData, 'PNG',15, 1, 20, 10); // Adjust size and position as necessary
+            doc.addImage(imgData, 'PNG', 15, 1, 20, 10); // Adjust size and position as necessary
             doc.text(2, 12, `ASN Number: ${qrData.AsnNo}`);
             doc.text(2, 15, `Invoice Number: ${qrData.InvoiceNo}`);
             doc.text(2, 18, `Invoice Date: ${formattedInvDate}`);

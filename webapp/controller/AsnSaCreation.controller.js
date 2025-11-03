@@ -1503,6 +1503,13 @@ sap.ui.define([
                         MessageToast.show("Enter Item Quantity");
                         return;
                     }
+
+                    const hasZeroPostedQty = itemData.some(obj => parseFloat(obj.Postedquantity) === 0);
+
+                    if (hasZeroPostedQty) {
+                        MessageToast.show("Quantity cannot be zero");
+                        return;
+                    }
                     let payload = {
                         "AsnNo": "",
                         "Inwardtype": "RECPO",
@@ -1523,7 +1530,7 @@ sap.ui.define([
                         "Transporter": Transporter,
                         "Status": "01",
                         "Vendorname": supplierName,
-                        "Sourceappvp":"X",
+                        "Sourceappvp": "X",
                         "to_Item": itemData
                     };
 
