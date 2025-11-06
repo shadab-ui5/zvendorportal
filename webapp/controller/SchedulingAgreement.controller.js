@@ -37,10 +37,10 @@ sap.ui.define([
                     that.loginUser = UserInfo.getId();
                     Models.getUserInfo(that, that.loginUser).then((oData) => {
                         const uniqueGroups = [...new Map(oData.results.map(obj => [obj.PurchasingGroup, obj])).values()];
-
+                        const uniqueSuppliers = [...new Map(oData.results.map(obj => [obj.Supplier, obj])).values()];
                         that.getOwnerComponent().getModel("PgVHModel").setData(uniqueGroups);
 
-                        that.getOwnerComponent().getModel("SupplierVHModel").setData(oData.results);
+                        that.getOwnerComponent().getModel("SupplierVHModel").setData(uniqueSuppliers);
                         console.log("UserInfo Loaded..")
                         that.loadPurchaseOrderFilter();
                     }).catch((oError) => {
@@ -52,10 +52,10 @@ sap.ui.define([
                 that.loginUser = "CB9980000026"; // fallback or hardcoded for local testing
                 Models.getUserInfo(that, that.loginUser).then((oData) => {
                     const uniqueGroups = [...new Map(oData.results.map(obj => [obj.PurchasingGroup, obj])).values()];
-
+const uniqueSuppliers = [...new Map(oData.results.map(obj => [obj.Supplier, obj])).values()];
                     that.getOwnerComponent().getModel("PgVHModel").setData(uniqueGroups);
 
-                    that.getOwnerComponent().getModel("SupplierVHModel").setData(oData.results);
+                    that.getOwnerComponent().getModel("SupplierVHModel").setData(uniqueSuppliers);
                     console.log("UserInfo Loaded..")
                     that.loadPurchaseOrderFilter();
                 }).catch((oError) => {
