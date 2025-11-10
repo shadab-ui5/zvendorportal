@@ -1445,12 +1445,16 @@ sap.ui.define([
             let sQRCodeNumber = qrData.AsnNo;
 
             // create hidden canvas dynamically
-            let canvas = document.createElement("canvas");
-            canvas.id = "qrCanvas";
-            canvas.width = 200;
-            canvas.height = 200;
-            canvas.style.display = "none";
-            document.body.appendChild(canvas);
+             let canvas = document.getElementById("qrCanvas");
+             if (!canvas) {
+                canvas = document.createElement("canvas");
+                canvas.id = "qrCanvas";
+                canvas.width = 200;
+                canvas.height = 200;
+                canvas.style.display = "none";
+                document.body.appendChild(canvas);
+            }
+
 
             // QRCode.toCanvas(canvas, sQRCodeNumber, function (error) {
             //     if (error) {
@@ -1471,7 +1475,7 @@ sap.ui.define([
                         displayValue: false,  // Show the text below the barcode
                         fontSize: 14,
                         lineColor: "#000",
-                        width: 3,
+                        width: 2,
                         height: 50,
                         margin: 10
                     });
