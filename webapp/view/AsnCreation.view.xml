@@ -60,7 +60,7 @@
                             <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox id="_IDGenVBox7" width="20%">
-                            <Label id="_IDGenLabel7" text="Vehical Number" required="true"/>
+                            <Label id="_IDGenLabel7" text="Vehicle Number" required="true"/>
                             <Input id="idRAPO_VehicalNo" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox id="_IDGenVBox8" width="20%">
