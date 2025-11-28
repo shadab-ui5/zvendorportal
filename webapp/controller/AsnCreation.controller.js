@@ -1763,6 +1763,13 @@ sap.ui.define([
                 oData.splice(index, 1);
             }
             this.getView().getModel("pendingFiles").setData(oData);
+        },
+         convertToCaps: function (oEvent) {
+            const oInput = oEvent.getSource();
+            const value = oInput.getValue();
+
+            // Convert to uppercase
+            oInput.setValue(value.toUpperCase());
         }
 
 

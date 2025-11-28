@@ -34,7 +34,7 @@
                     <HBox id="_IDGenHBox5">
                         <VBox id="_IDGenVBox5" width="20%">
                             <Label id="_IDGenLabel5" text="Invoice Number" required="true"/>
-                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%"/>
+                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%" liveChange="convertToCaps"/>
                         </VBox>
                         <VBox id="_IDGenVBox20" width="20%">
                             <Label id="_IDGenLabel26" text="Plant" required="true"/>
@@ -61,7 +61,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox7" width="20%">
                             <Label id="_IDGenLabel7" text="Vehicle Number" required="true"/>
-                            <Input id="idRAPO_VehicalNo" maxLength="10" width="75%"/>
+                            <Input id="idRAPO_VehicalNo" maxLength="10" width="75%" liveChange="convertToCaps"/>
                         </VBox>
                         <VBox id="_IDGenVBox8" width="20%">
                             <Label id="_IDGenLabel8" text="Transporter" required="true"/>
