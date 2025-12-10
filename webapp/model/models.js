@@ -48,6 +48,9 @@ sap.ui.define([
                     }
                     oODataModel.read("/PoItem", {
                         filters: aFilters,
+                        urlParameters: {
+                            "$top": 3000
+                        },
                         success: function (oData) {
 
                             if (oData && oData.results) {
@@ -91,6 +94,9 @@ sap.ui.define([
                     }
                     oODataModel.read("/SaItem", {
                         filters: aFilters,
+                        urlParameters: {
+                            "$top": 3000
+                        },
                         success: function (oData) {
                             if (oData && oData.results) {
                                 oData.results.sort(function (a, b) {

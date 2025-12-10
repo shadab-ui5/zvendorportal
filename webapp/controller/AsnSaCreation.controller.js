@@ -1900,29 +1900,79 @@ sap.ui.define([
             // Update RoutePoData>/attachbtn
             this.getView().getModel("RoutePoData").setProperty("/attachbtn", bHasSelection);
         },
-        onSaveFiles: async function (asn) {
+        // onSaveFiles: async function (asn) {
+        //     const that = this;
+        //     const pending = this.getView().getModel("pendingFiles").getData();
+
+        //     for (let fileEntry of pending) {
+        //         const file = fileEntry.file;
+        //         const arrayBuffer = await file.arrayBuffer();
+        //         const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+        //         let fileName = `${asn}/${file.name}`;
+        //         await fetch(this.baseObjectStoreUrl + "/uploadFile", {
+        //             method: "POST",
+        //             headers: { "Content-Type": "application/json" },
+        //             body: JSON.stringify({ objectName: fileName, content: base64 })
+        //         });
+        //     }
+
+        //     MessageToast.show("Files uploaded");
+
+        //     // clear pending files
+        //     this.getView().getModel("pendingFiles").setData([]);
+
+        //     // refresh backend files
+        //     // this.refreshFiles();
+        // },
+          onSaveFiles: async function (asn) {
             const that = this;
             const pending = this.getView().getModel("pendingFiles").getData();
 
+            if (!pending || pending.length === 0) {
+                MessageToast.show("No files to upload");
+                return;
+            }
+
+            // Safe base64 converter (no spread operator)
+            const arrayBufferToBase64 = buffer => {
+                let binary = "";
+                const bytes = new Uint8Array(buffer);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return btoa(binary);
+            };
+
             for (let fileEntry of pending) {
                 const file = fileEntry.file;
+
+                // Read file as binary
                 const arrayBuffer = await file.arrayBuffer();
-                const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-                let fileName = `${asn}/${file.name}`;
+
+                // Convert safely to base64
+                const base64 = arrayBufferToBase64(arrayBuffer);
+
+                const fileName = `${asn}/${file.name}`;
+
+                // Upload to backend
                 await fetch(this.baseObjectStoreUrl + "/uploadFile", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ objectName: fileName, content: base64 })
+                    body: JSON.stringify({
+                        objectName: fileName,
+                        content: base64
+                    })
                 });
             }
 
             MessageToast.show("Files uploaded");
 
-            // clear pending files
+            // Clear pending
             this.getView().getModel("pendingFiles").setData([]);
 
-            // refresh backend files
-            // this.refreshFiles();
+            // OPTIONAL: Refresh backend files if it does NOT call onSaveFiles()
+            // await this.refreshFiles();
         },
         onRemovePendingFile: function (oEvent) {
             const oItem = oEvent.getSource().getParent(); // ColumnListItem
