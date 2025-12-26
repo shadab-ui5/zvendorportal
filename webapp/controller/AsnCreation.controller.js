@@ -183,6 +183,9 @@ sap.ui.define([
             if (sValue === "") {
                 return;
             }
+            const caps = sValue.toUpperCase();
+            sValue = caps;
+            oInput.setValue(caps);
             const supplier = this.getOwnerComponent().getModel("RoutePoData").getProperty("/PoHeader/Supplier");
             var aFinalFilter = new sap.ui.model.Filter({
                 filters: [
@@ -1305,6 +1308,7 @@ sap.ui.define([
                             "LineItem": item.PurchaseOrderItem,
                             "Material": item.Material,
                             "Materialdesc": item.PurchaseOrderItemText,
+                            "Netprice": parseFloat(parseFloat(item.NetAmount) / parseFloat(item.OrderQuantity) || "0.00").toFixed(2),
                             "Quantity": parseFloat(item.OrderQuantity).toFixed(2),
                             "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
                             "Uom": item.BaseUnit
@@ -1803,7 +1807,7 @@ sap.ui.define([
             // OPTIONAL: Refresh backend files if it does NOT call onSaveFiles()
             // await this.refreshFiles();
         },
-        
+
         onRemovePendingFile: function (oEvent) {
             const oItem = oEvent.getSource().getParent(); // ColumnListItem
             const oCtx = oItem.getBindingContext("pendingFiles");
@@ -1817,10 +1821,13 @@ sap.ui.define([
         },
         convertToCaps: function (oEvent) {
             const oInput = oEvent.getSource();
-            const value = oInput.getValue();
-
-            // Convert to uppercase
-            oInput.setValue(value.toUpperCase());
+            const value = oEvent.getParameter("value");
+            const caps = value.toUpperCase();
+            oInput.setValue(caps);
+            if (value !== caps) {
+                oInput.setValue(caps);
+                oInput.fireChange({ value: caps });  // Force change event
+            }
         }
 
 

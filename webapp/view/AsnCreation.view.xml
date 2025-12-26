@@ -34,7 +34,7 @@
                     <HBox id="_IDGenHBox5">
                         <VBox id="_IDGenVBox5" width="20%">
                             <Label id="_IDGenLabel5" text="Invoice Number" required="true"/>
-                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%" liveChange="convertToCaps"/>
+                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%" />
                         </VBox>
                         <VBox id="_IDGenVBox20" width="20%">
                             <Label id="_IDGenLabel26" text="Plant" required="true"/>
@@ -185,7 +185,9 @@
                                     <Column>
                                         <Text text="Last Modified"/>
                                     </Column>
-                                    <Column hAlign="Center" width="5rem"><Text text=""/></Column>
+                                    <Column hAlign="Center" width="5rem">
+                                        <Text text=""/>
+                                    </Column>
                                 </columns>
                                 <items>
                                     <ColumnListItem>

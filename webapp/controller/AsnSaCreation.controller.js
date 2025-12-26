@@ -192,6 +192,9 @@ sap.ui.define([
             if (sValue === "") {
                 return;
             }
+            const caps = sValue.toUpperCase();
+            oInput.setValue(caps);
+            sValue = caps;
             const supplier = this.getOwnerComponent().getModel("RouteSaData").getProperty("/SaHeader/Supplier");
             var aFinalFilter = new sap.ui.model.Filter({
                 filters: [
@@ -1493,6 +1496,7 @@ sap.ui.define([
                             "LineItem": item.SchedulingAgreementItem,
                             "Material": item.Material,
                             "Materialdesc": item.PurchasingDocumentItemText,
+                            "Netprice": item.NetPricewoTax,
                             "Quantity": parseFloat(item.TargetQuantity).toFixed(2),
                             "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
                             "Uom": item.OrderQuantityUnit
@@ -1924,7 +1928,7 @@ sap.ui.define([
         //     // refresh backend files
         //     // this.refreshFiles();
         // },
-          onSaveFiles: async function (asn) {
+        onSaveFiles: async function (asn) {
             const that = this;
             const pending = this.getView().getModel("pendingFiles").getData();
 
@@ -1985,12 +1989,15 @@ sap.ui.define([
             }
             this.getView().getModel("pendingFiles").setData(oData);
         },
-         convertToCaps: function (oEvent) {
+        convertToCaps: function (oEvent) {
             const oInput = oEvent.getSource();
-            const value = oInput.getValue();
+            const value = oEvent.getParameter("value");
+            const caps = value.toUpperCase();
 
-            // Convert to uppercase
-            oInput.setValue(value.toUpperCase());
+            if (value !== caps) {
+                oInput.setValue(caps);
+                oInput.fireChange({ value: caps });  // Force change event
+            }
         }
 
 

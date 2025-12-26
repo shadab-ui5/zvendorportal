@@ -40,7 +40,7 @@
                     <HBox id="_IDGenHBox9">
                         <VBox id="_IDGenVBox29" width="20%">
                             <Label id="_IDGenLabel38" text="Invoice Number" required="true"/>
-                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%" liveChange="convertToCaps"/>
+                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%"/>
                         </VBox>
 
                         <VBox id="_IDGenVBox25" width="20%">
